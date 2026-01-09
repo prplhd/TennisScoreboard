@@ -1,9 +1,10 @@
-package ru.prplhd.tennisscoreboard.repository;
+package ru.prplhd.tennisscoreboard.persistence.dao;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface BaseRepository<ID, T> {
+public interface BaseDao<ID, T> {
+
     Optional<T> findById(ID id);
 
     List<T> findAll();
