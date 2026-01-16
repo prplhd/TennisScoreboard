@@ -12,5 +12,7 @@
         <property name="hibernate.hikari.password"></property>
         <property name="hibernate.hikari.maximumPoolSize">10</property>
         <property name="hibernate.hikari.poolName">TennisHikari</property>
+
+        <property name="hbm2ddl.auto">validate</property>
     </session-factory>
 </hibernate-configuration>

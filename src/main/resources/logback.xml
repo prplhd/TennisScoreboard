@@ -34,4 +34,6 @@
 
     <logger name="ru.prplhd.tennisscoreboard" level="DEBUG"/>
 
+    <logger name="org.hibernate.SQL" level="DEBUG"/>
+
 </configuration>
