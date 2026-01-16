@@ -5,8 +5,14 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import lombok.extern.slf4j.Slf4j;
+import org.flywaydb.core.api.FlywayException;
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import ru.prplhd.tennisscoreboard.persistence.bootstrap.DatabaseMigrator;
+import ru.prplhd.tennisscoreboard.persistence.bootstrap.HibernateSessionFactoryProvider;
+import ru.prplhd.tennisscoreboard.persistence.entity.FinishedMatchEntity;
+import ru.prplhd.tennisscoreboard.persistence.entity.PlayerEntity;
 
 @Slf4j
 @WebListener
@@ -18,20 +24,32 @@ public class AppContextListener implements ServletContextListener {
         ServletContext context = sce.getServletContext();
 
         try {
-            log.info("Initializing Hibernate SessionFactory...");
+            log.info("Building Hibernate Configuration...");
+            Configuration configuration = HibernateSessionFactoryProvider
+                    .createConfiguration(PlayerEntity.class, FinishedMatchEntity.class);
 
-            Configuration configuration = new Configuration();
-            configuration.configure();
-            SessionFactory sessionFactory = configuration.buildSessionFactory();
+            log.info("Starting Flyway migration...");
+            DatabaseMigrator.runMigrations(configuration);
+
+            log.info("Building Hibernate SessionFactory...");
+            SessionFactory sessionFactory = HibernateSessionFactoryProvider
+                    .createSessionFactory(configuration);
             context.setAttribute(SESSION_FACTORY_ATTRIBUTE, sessionFactory);
 
-            log.info("Hibernate SessionFactory successfully initialized");
+            log.info("Startup completed successfully");
 
-        } catch (Exception e) {
-            log.error("Failed to initialize Hibernate SessionFactory. Application startup will be aborted.", e);
+        } catch (FlywayException e) {
+            log.error("Startup failed: database migration failed", e);
+            throw new IllegalStateException(e);
+
+        } catch (HibernateException e) {
+            log.error("Startup failed: Hibernate initialization failed", e);
+            throw new IllegalStateException(e);
+
+        } catch (RuntimeException e) {
+            log.error("Startup failed: unexpected error", e);
             throw new IllegalStateException(e);
         }
-
     }
 
     @Override
