@@ -4,7 +4,7 @@ import ru.prplhd.tennisscoreboard.persistence.entity.FinishedMatchEntity;
 
 import java.util.List;
 
-public interface MatchDao extends BaseDao<Long, FinishedMatchEntity>{
+public interface MatchDao extends BaseDao<Integer, FinishedMatchEntity>{
     @Override
     List<FinishedMatchEntity> findAll();
 
