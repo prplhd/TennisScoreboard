@@ -1,4 +1,4 @@
-package ru.prplhd.tennisscoreboard.web;
+package ru.prplhd.tennisscoreboard.web.bootstrap;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
