@@ -11,30 +11,35 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import ru.prplhd.tennisscoreboard.persistence.bootstrap.DatabaseMigrator;
 import ru.prplhd.tennisscoreboard.persistence.bootstrap.HibernateSessionFactoryProvider;
-import ru.prplhd.tennisscoreboard.persistence.entity.FinishedMatchEntity;
-import ru.prplhd.tennisscoreboard.persistence.entity.PlayerEntity;
+import ru.prplhd.tennisscoreboard.persistence.entity.Match;
+import ru.prplhd.tennisscoreboard.persistence.entity.Player;
+import ru.prplhd.tennisscoreboard.persistence.repository.MatchRepository;
+import ru.prplhd.tennisscoreboard.persistence.repository.MatchRepositoryImpl;
+import ru.prplhd.tennisscoreboard.persistence.repository.PlayerRepository;
+import ru.prplhd.tennisscoreboard.persistence.repository.PlayerRepositoryImpl;
 
 @Slf4j
 @WebListener
 public class AppContextListener implements ServletContextListener {
-    public static final String SESSION_FACTORY_ATTRIBUTE = "sessionFactory";
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
 
+        SessionFactory sessionFactory;
+
         try {
             log.info("Building Hibernate Configuration...");
             Configuration configuration = HibernateSessionFactoryProvider
-                    .createConfiguration(PlayerEntity.class, FinishedMatchEntity.class);
+                    .createConfiguration(Player.class, Match.class);
 
             log.info("Starting Flyway migration...");
             DatabaseMigrator.runMigrations(configuration);
 
             log.info("Building Hibernate SessionFactory...");
-            SessionFactory sessionFactory = HibernateSessionFactoryProvider
+            sessionFactory = HibernateSessionFactoryProvider
                     .createSessionFactory(configuration);
-            context.setAttribute(SESSION_FACTORY_ATTRIBUTE, sessionFactory);
+            context.setAttribute(ContextKeys.SESSION_FACTORY, sessionFactory);
 
             log.info("Startup completed successfully");
 
@@ -50,13 +55,20 @@ public class AppContextListener implements ServletContextListener {
             log.error("Startup failed: unexpected error", e);
             throw new IllegalStateException(e);
         }
+
+        MatchRepository matchRepository = new MatchRepositoryImpl(sessionFactory);
+        PlayerRepository  playerRepository = new PlayerRepositoryImpl(sessionFactory);
+
+        context.setAttribute(ContextKeys.MATCH_REPOSITORY, matchRepository);
+        context.setAttribute(ContextKeys.PLAYER_REPOSITORY, playerRepository);
+
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         try {
             ServletContext context = sce.getServletContext();
-            SessionFactory sessionFactory = (SessionFactory) context.getAttribute(SESSION_FACTORY_ATTRIBUTE);
+            SessionFactory sessionFactory = (SessionFactory) context.getAttribute(ContextKeys.SESSION_FACTORY);
 
             log.info("Shutting down Hibernate SessionFactory...");
 
@@ -64,7 +76,7 @@ public class AppContextListener implements ServletContextListener {
                 log.warn("SessionFactory not found in ServletContext. Skipping shutdown.");
             } else {
                 sessionFactory.close();
-                context.removeAttribute(SESSION_FACTORY_ATTRIBUTE);
+                context.removeAttribute(ContextKeys.SESSION_FACTORY);
 
                 log.info("Hibernate SessionFactory shut down successfully.");
             }
