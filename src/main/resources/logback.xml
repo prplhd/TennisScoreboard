@@ -19,7 +19,7 @@
             <fileNamePattern>${LOG_DIR}/${APP_NAME}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>50MB</maxFileSize>
             <maxHistory>14</maxHistory>
-            <totalSizeCap>1GB</totalSizeCap>
+            <totalSizeCap>150MB</totalSizeCap>
         </rollingPolicy>
 
         <encoder>
