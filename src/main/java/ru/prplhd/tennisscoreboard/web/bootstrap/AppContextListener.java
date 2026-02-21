@@ -9,14 +9,17 @@ import org.flywaydb.core.api.FlywayException;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import ru.prplhd.tennisscoreboard.persistence.bootstrap.DatabaseMigrator;
-import ru.prplhd.tennisscoreboard.persistence.bootstrap.HibernateSessionFactoryProvider;
-import ru.prplhd.tennisscoreboard.persistence.entity.Match;
-import ru.prplhd.tennisscoreboard.persistence.entity.Player;
-import ru.prplhd.tennisscoreboard.persistence.repository.MatchRepository;
-import ru.prplhd.tennisscoreboard.persistence.repository.MatchRepositoryImpl;
-import ru.prplhd.tennisscoreboard.persistence.repository.PlayerRepository;
-import ru.prplhd.tennisscoreboard.persistence.repository.PlayerRepositoryImpl;
+import ru.prplhd.tennisscoreboard.domain.Match;
+import ru.prplhd.tennisscoreboard.domain.Player;
+import ru.prplhd.tennisscoreboard.storage.db.migrator.DatabaseMigrator;
+import ru.prplhd.tennisscoreboard.storage.db.hibernate.HibernateSessionFactoryProvider;
+import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.MatchEntity;
+import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.PlayerEntity;
+import ru.prplhd.tennisscoreboard.repository.MatchRepository;
+import ru.prplhd.tennisscoreboard.storage.db.hibernate.repository.MatchRepositoryImpl;
+import ru.prplhd.tennisscoreboard.repository.PlayerRepository;
+import ru.prplhd.tennisscoreboard.storage.db.hibernate.repository.PlayerRepositoryImpl;
+import ru.prplhd.tennisscoreboard.web.ServletContextKeys;
 
 @Slf4j
 @WebListener
@@ -31,7 +34,7 @@ public class AppContextListener implements ServletContextListener {
         try {
             log.info("Building Hibernate Configuration...");
             Configuration configuration = HibernateSessionFactoryProvider
-                    .createConfiguration(Player.class, Match.class);
+                    .createConfiguration(PlayerEntity.class, MatchEntity.class);
 
             log.info("Starting Flyway migration...");
             DatabaseMigrator.runMigrations(configuration);
@@ -39,7 +42,7 @@ public class AppContextListener implements ServletContextListener {
             log.info("Building Hibernate SessionFactory...");
             sessionFactory = HibernateSessionFactoryProvider
                     .createSessionFactory(configuration);
-            context.setAttribute(ContextKeys.SESSION_FACTORY, sessionFactory);
+            context.setAttribute(ServletContextKeys.SESSION_FACTORY, sessionFactory);
 
             log.info("Startup completed successfully");
 
@@ -59,8 +62,17 @@ public class AppContextListener implements ServletContextListener {
         MatchRepository matchRepository = new MatchRepositoryImpl(sessionFactory);
         PlayerRepository  playerRepository = new PlayerRepositoryImpl(sessionFactory);
 
-        context.setAttribute(ContextKeys.MATCH_REPOSITORY, matchRepository);
-        context.setAttribute(ContextKeys.PLAYER_REPOSITORY, playerRepository);
+        // Это удалить
+        Player player1 = new Player(1, "Chel");
+        Player player2 = new Player(2, "Guy");
+
+        Match match = new Match(player1, player2);
+
+        context.setAttribute("match", match);
+        // Это удалить
+
+        context.setAttribute(ServletContextKeys.MATCH_REPOSITORY, matchRepository);
+        context.setAttribute(ServletContextKeys.PLAYER_REPOSITORY, playerRepository);
 
     }
 
@@ -68,7 +80,7 @@ public class AppContextListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent sce) {
         try {
             ServletContext context = sce.getServletContext();
-            SessionFactory sessionFactory = (SessionFactory) context.getAttribute(ContextKeys.SESSION_FACTORY);
+            SessionFactory sessionFactory = (SessionFactory) context.getAttribute(ServletContextKeys.SESSION_FACTORY);
 
             log.info("Shutting down Hibernate SessionFactory...");
 
@@ -76,7 +88,7 @@ public class AppContextListener implements ServletContextListener {
                 log.warn("SessionFactory not found in ServletContext. Skipping shutdown.");
             } else {
                 sessionFactory.close();
-                context.removeAttribute(ContextKeys.SESSION_FACTORY);
+                context.removeAttribute(ServletContextKeys.SESSION_FACTORY);
 
                 log.info("Hibernate SessionFactory shut down successfully.");
             }
