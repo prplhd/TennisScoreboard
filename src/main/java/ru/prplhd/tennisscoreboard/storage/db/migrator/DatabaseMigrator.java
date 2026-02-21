@@ -1,4 +1,4 @@
-package ru.prplhd.tennisscoreboard.persistence.bootstrap;
+package ru.prplhd.tennisscoreboard.storage.db.migrator;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

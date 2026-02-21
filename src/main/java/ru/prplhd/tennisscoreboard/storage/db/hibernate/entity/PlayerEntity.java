@@ -1,4 +1,4 @@
-package ru.prplhd.tennisscoreboard.persistence.entity;
+package ru.prplhd.tennisscoreboard.storage.db.hibernate.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +23,7 @@ import lombok.ToString;
 @Builder
 @Table(name = "players")
 @Entity
-public class Player implements BaseEntity<Integer> {
+public class PlayerEntity implements BaseEntity<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

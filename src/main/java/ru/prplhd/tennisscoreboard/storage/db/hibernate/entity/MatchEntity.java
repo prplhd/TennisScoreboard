@@ -1,4 +1,4 @@
-package ru.prplhd.tennisscoreboard.persistence.entity;
+package ru.prplhd.tennisscoreboard.storage.db.hibernate.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,20 +25,20 @@ import lombok.ToString;
 @Builder
 @Table(name = "matches")
 @Entity
-public class Match implements BaseEntity<Integer> {
+public class MatchEntity implements BaseEntity<Integer> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "player1")
-    private Player player1;
+    private PlayerEntity player1;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "player2")
-    private Player player2;
+    private PlayerEntity player2;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "winner")
-    private Player winner;
+    private PlayerEntity winner;
 }

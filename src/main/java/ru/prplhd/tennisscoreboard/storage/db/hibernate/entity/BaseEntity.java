@@ -1,4 +1,4 @@
-package ru.prplhd.tennisscoreboard.persistence.entity;
+package ru.prplhd.tennisscoreboard.storage.db.hibernate.entity;
 
 import java.io.Serializable;
 

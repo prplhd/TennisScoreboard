@@ -1,9 +1,10 @@
-package ru.prplhd.tennisscoreboard.persistence.repository;
+package ru.prplhd.tennisscoreboard.storage.db.hibernate.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import ru.prplhd.tennisscoreboard.persistence.entity.BaseEntity;
+import ru.prplhd.tennisscoreboard.repository.Repository;
+import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.BaseEntity;
 
 import java.io.Serializable;
 import java.util.List;
