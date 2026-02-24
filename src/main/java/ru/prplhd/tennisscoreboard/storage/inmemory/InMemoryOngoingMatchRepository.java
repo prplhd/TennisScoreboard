@@ -3,13 +3,13 @@ package ru.prplhd.tennisscoreboard.storage.inmemory;
 import ru.prplhd.tennisscoreboard.domain.Match;
 import ru.prplhd.tennisscoreboard.repository.OngoingMatchRepository;
 
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryOngoingMatchRepository implements OngoingMatchRepository<UUID, Match> {
 
-    private ConcurrentHashMap<UUID, Match> ongoingMatches = new ConcurrentHashMap<>();
-
+    private final Map<UUID, Match> ongoingMatches = new ConcurrentHashMap<>();
 
     @Override
     public Match findById(UUID uuid) {
