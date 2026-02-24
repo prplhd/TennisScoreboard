@@ -9,16 +9,14 @@ import org.flywaydb.core.api.FlywayException;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import ru.prplhd.tennisscoreboard.domain.Match;
-import ru.prplhd.tennisscoreboard.domain.Player;
-import ru.prplhd.tennisscoreboard.storage.db.migrator.DatabaseMigrator;
+import ru.prplhd.tennisscoreboard.repository.MatchRepository;
+import ru.prplhd.tennisscoreboard.repository.PlayerRepository;
 import ru.prplhd.tennisscoreboard.storage.db.hibernate.HibernateSessionFactoryProvider;
 import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.MatchEntity;
 import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.PlayerEntity;
-import ru.prplhd.tennisscoreboard.repository.MatchRepository;
 import ru.prplhd.tennisscoreboard.storage.db.hibernate.repository.MatchRepositoryImpl;
-import ru.prplhd.tennisscoreboard.repository.PlayerRepository;
 import ru.prplhd.tennisscoreboard.storage.db.hibernate.repository.PlayerRepositoryImpl;
+import ru.prplhd.tennisscoreboard.storage.db.migrator.DatabaseMigrator;
 import ru.prplhd.tennisscoreboard.web.ServletContextKeys;
 
 @Slf4j
@@ -59,17 +57,8 @@ public class AppContextListener implements ServletContextListener {
             throw new IllegalStateException(e);
         }
 
-        MatchRepository matchRepository = new MatchRepositoryImpl(sessionFactory);
-        PlayerRepository  playerRepository = new PlayerRepositoryImpl(sessionFactory);
-
-        // Это удалить
-        Player player1 = new Player(1, "Chel");
-        Player player2 = new Player(2, "Guy");
-
-        Match match = new Match(player1, player2);
-
-        context.setAttribute("match", match);
-        // Это удалить
+        MatchRepository<Integer, MatchEntity> matchRepository = new MatchRepositoryImpl(sessionFactory);
+        PlayerRepository<Integer, PlayerEntity> playerRepository = new PlayerRepositoryImpl(sessionFactory);
 
         context.setAttribute(ServletContextKeys.MATCH_REPOSITORY, matchRepository);
         context.setAttribute(ServletContextKeys.PLAYER_REPOSITORY, playerRepository);
