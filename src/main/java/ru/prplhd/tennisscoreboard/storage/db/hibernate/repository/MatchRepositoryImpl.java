@@ -22,6 +22,6 @@ public class MatchRepositoryImpl extends BaseRepository<Integer, MatchEntity> im
                 JOIN FETCH m.player2
                 WHERE (m.player1.name = :name OR m.player2.name = :name)
                 """;
-        return session.createQuery(hql, MatchEntity.class).setParameter("name", name).getResultList();
+        return session.createQuery(hql, clazz).setParameter("name", name).getResultList();
     }
 }
