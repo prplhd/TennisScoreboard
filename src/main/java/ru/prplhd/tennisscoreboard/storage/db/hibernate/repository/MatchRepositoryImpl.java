@@ -7,7 +7,7 @@ import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.MatchEntity;
 
 import java.util.List;
 
-public class MatchRepositoryImpl extends BaseRepository<Integer, MatchEntity> implements MatchRepository<Integer, MatchEntity> {
+public class MatchRepositoryImpl extends BaseRepository<Integer, MatchEntity> implements MatchRepository {
 
     public MatchRepositoryImpl(SessionFactory sessionFactory) {
         super(MatchEntity.class, sessionFactory);

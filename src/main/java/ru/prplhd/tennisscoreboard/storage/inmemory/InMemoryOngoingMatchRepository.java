@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class InMemoryOngoingMatchRepository implements OngoingMatchRepository<UUID, Match> {
+public class InMemoryOngoingMatchRepository implements OngoingMatchRepository {
 
     private final Map<UUID, Match> ongoingMatches = new ConcurrentHashMap<>();
 

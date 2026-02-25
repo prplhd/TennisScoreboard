@@ -1,6 +1,6 @@
 package ru.prplhd.tennisscoreboard.repository;
 
-import java.io.Serializable;
+import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.PlayerEntity;
 
-public interface PlayerRepository<ID extends Serializable, E> extends Repository<ID, E> {
+public interface PlayerRepository extends Repository<Integer, PlayerEntity> {
 }

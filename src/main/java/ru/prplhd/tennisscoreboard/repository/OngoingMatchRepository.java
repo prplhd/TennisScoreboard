@@ -1,14 +1,16 @@
 package ru.prplhd.tennisscoreboard.repository;
 
-import java.io.Serializable;
+import ru.prplhd.tennisscoreboard.domain.Match;
 
-public interface OngoingMatchRepository<ID extends Serializable, M> {
+import java.util.UUID;
 
-    M findById(ID id);
+public interface OngoingMatchRepository {
 
-    M save(ID id, M match);
+    Match findById(UUID id);
 
-    M delete(ID id);
+    Match save(UUID id, Match match);
 
-    M applyPoint(ID id, Integer playerId);
+    Match delete(UUID id);
+
+    Match applyPoint(UUID id, Integer playerId);
 }

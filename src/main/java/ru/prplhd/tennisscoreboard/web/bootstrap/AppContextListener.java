@@ -57,8 +57,8 @@ public class AppContextListener implements ServletContextListener {
             throw new IllegalStateException(e);
         }
 
-        MatchRepository<Integer, MatchEntity> matchRepository = new MatchRepositoryImpl(sessionFactory);
-        PlayerRepository<Integer, PlayerEntity> playerRepository = new PlayerRepositoryImpl(sessionFactory);
+        MatchRepository matchRepository = new MatchRepositoryImpl(sessionFactory);
+        PlayerRepository playerRepository = new PlayerRepositoryImpl(sessionFactory);
 
         context.setAttribute(ServletContextKeys.MATCH_REPOSITORY, matchRepository);
         context.setAttribute(ServletContextKeys.PLAYER_REPOSITORY, playerRepository);
