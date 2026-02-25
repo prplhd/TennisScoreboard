@@ -52,8 +52,8 @@ public class Match {
     public MatchDto getScoreboard() {
         String winnerName = winner == null ? null : winner.getName();
         return new MatchDto(
-                firstPlayer.getName(),
-                secondPlayer.getName(),
+                firstPlayer,
+                secondPlayer,
                 score.getScore(),
                 winnerName
         );

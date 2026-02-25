@@ -1,3 +1,5 @@
 package ru.prplhd.tennisscoreboard.dto.match;
 
-public record MatchDto(String firstPlayerName, String secondPlayerName, ScoreDto scoreDto, String winner) {}
+import ru.prplhd.tennisscoreboard.domain.Player;
+
+public record MatchDto(Player firstPlayer, Player secondPlayer, ScoreDto scoreDto, String winner) {}

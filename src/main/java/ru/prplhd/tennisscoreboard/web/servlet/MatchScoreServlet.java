@@ -6,15 +6,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ru.prplhd.tennisscoreboard.dto.request.NewMatchRequestDto;
+import ru.prplhd.tennisscoreboard.dto.match.MatchDto;
 import ru.prplhd.tennisscoreboard.service.OngoingMatchService;
 import ru.prplhd.tennisscoreboard.web.ServletContextKeys;
 
 import java.io.IOException;
 import java.util.UUID;
 
-@WebServlet("/new-match")
-public class NewMatchServlet extends HttpServlet {
+@WebServlet("/match-score")
+public class MatchScoreServlet extends HttpServlet {
 
     private OngoingMatchService ongoingMatchService;
 
@@ -26,17 +26,20 @@ public class NewMatchServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/jsp/new-match.jsp").forward(req, resp);
+        UUID matchUUID = UUID.fromString(req.getParameter("uuid"));
+        MatchDto matchDto = ongoingMatchService.getMatchScoreboard(matchUUID);
+
+        req.setAttribute("matchDto", matchDto);
+        req.setAttribute("matchUUID", matchUUID);
+        req.getRequestDispatcher("/WEB-INF/jsp/match-score.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String firstPlayerName = req.getParameter("firstPlayerName");
-        String secondPlayerName = req.getParameter("secondPlayerName");
+        UUID matchUUID = UUID.fromString(req.getParameter("uuid"));
+        Integer scorerId = Integer.valueOf(req.getParameter("scorerId"));
 
-        NewMatchRequestDto newMatchRequestDto = new NewMatchRequestDto(firstPlayerName, secondPlayerName);
-
-        UUID matchUUID = ongoingMatchService.createNewMatch(newMatchRequestDto);
+        ongoingMatchService.applyPoint(matchUUID, scorerId);
 
         resp.sendRedirect("/match-score?uuid=" + matchUUID, HttpServletResponse.SC_SEE_OTHER);
     }

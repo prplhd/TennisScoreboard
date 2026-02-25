@@ -3,6 +3,7 @@ package ru.prplhd.tennisscoreboard.service;
 import lombok.RequiredArgsConstructor;
 import ru.prplhd.tennisscoreboard.domain.Match;
 import ru.prplhd.tennisscoreboard.domain.Player;
+import ru.prplhd.tennisscoreboard.dto.match.MatchDto;
 import ru.prplhd.tennisscoreboard.dto.request.NewMatchRequestDto;
 import ru.prplhd.tennisscoreboard.repository.OngoingMatchRepository;
 import ru.prplhd.tennisscoreboard.repository.PlayerRepository;
@@ -16,6 +17,7 @@ public class OngoingMatchServiceImpl implements OngoingMatchService{
     private final PlayerRepository playerRepository;
     private final OngoingMatchRepository ongoingMatchRepository;
 
+    @Override
     public UUID createNewMatch(NewMatchRequestDto newMatchRequestDto) {
         String firstPlayerName = newMatchRequestDto.firstPlayerName();
         String secondPlayerName = newMatchRequestDto.secondPlayerName();
@@ -29,6 +31,17 @@ public class OngoingMatchServiceImpl implements OngoingMatchService{
         ongoingMatchRepository.save(matchUUID, match);
 
         return matchUUID;
+    }
+
+    @Override
+    public MatchDto getMatchScoreboard(UUID matchUUID) {
+        Match match = ongoingMatchRepository.findById(matchUUID);
+        return match.getScoreboard();
+    }
+
+    @Override
+    public void applyPoint(UUID matchUUID, Integer scorerId) {
+        ongoingMatchRepository.applyPoint(matchUUID, scorerId);
     }
 
     private Player getOrCreateByName(String name) {
