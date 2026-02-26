@@ -23,7 +23,7 @@
         </div>
         <div>
             <nav class="nav-links">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/">Home</a>
                 <a class="nav-link" href="#">Matches</a>
             </nav>
         </div>
