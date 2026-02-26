@@ -2,6 +2,7 @@ package ru.prplhd.tennisscoreboard.domain.score;
 
 import ru.prplhd.tennisscoreboard.domain.PlayerSide;
 import ru.prplhd.tennisscoreboard.dto.match.ScoreDto;
+import ru.prplhd.tennisscoreboard.dto.match.SetScoreDto;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -50,14 +51,24 @@ public class Score {
         return copy;
     }
 
-    public ScoreDto getScore() {
+    public ScoreDto getScore(boolean isFinished) {
+        List<SetScoreDto> finishedSetsScore = new ArrayList<>();
+
+        if (isFinished) {
+            for (EnumMap<PlayerSide, Integer> set : finishedSets) {
+                SetScoreDto setScoreDto = new SetScoreDto(set.get(PlayerSide.FIRST), set.get(PlayerSide.SECOND));
+                finishedSetsScore.add(setScoreDto);
+            }
+        }
+
         return new ScoreDto(
                 pointScore.getFirstPlayerPoints(),
                 pointScore.getSecondPlayerPoints(),
                 gameScore.getFirstPlayerGames(),
                 gameScore.getSecondPlayerGames(),
                 setScore.getFirstPlayerSets(),
-                setScore.getSecondPlayerSets()
+                setScore.getSecondPlayerSets(),
+                finishedSetsScore
         );
     }
 
