@@ -12,6 +12,8 @@ import org.hibernate.cfg.Configuration;
 import ru.prplhd.tennisscoreboard.repository.MatchRepository;
 import ru.prplhd.tennisscoreboard.repository.OngoingMatchRepository;
 import ru.prplhd.tennisscoreboard.repository.PlayerRepository;
+import ru.prplhd.tennisscoreboard.service.FinishedMatchesPersistenceService;
+import ru.prplhd.tennisscoreboard.service.FinishedMatchesPersistenceServiceImpl;
 import ru.prplhd.tennisscoreboard.service.OngoingMatchService;
 import ru.prplhd.tennisscoreboard.service.OngoingMatchServiceImpl;
 import ru.prplhd.tennisscoreboard.storage.db.hibernate.HibernateSessionFactoryProvider;
@@ -66,12 +68,14 @@ public class AppContextListener implements ServletContextListener {
         OngoingMatchRepository ongoingMatchRepository = new InMemoryOngoingMatchRepository();
 
         OngoingMatchService ongoingMatchService = new OngoingMatchServiceImpl(playerRepository, ongoingMatchRepository);
+        FinishedMatchesPersistenceService finishedMatchesPersistenceService = new FinishedMatchesPersistenceServiceImpl(playerRepository, matchRepository);
 
         context.setAttribute(ServletContextKeys.MATCH_REPOSITORY, matchRepository);
         context.setAttribute(ServletContextKeys.PLAYER_REPOSITORY, playerRepository);
         context.setAttribute(ServletContextKeys.ONGOING_MATCH_REPOSITORY, ongoingMatchRepository);
 
         context.setAttribute(ServletContextKeys.ONGOING_MATCH_SERVICE, ongoingMatchService);
+        context.setAttribute(ServletContextKeys.FINISHED_MATCHES_PERSISTENCE_SERVICE, finishedMatchesPersistenceService);
 
     }
 

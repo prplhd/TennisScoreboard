@@ -45,6 +45,11 @@ public class OngoingMatchServiceImpl implements OngoingMatchService{
         return ongoingMatchRepository.applyPoint(matchUUID, scorerId).getScoreboard();
     }
 
+    @Override
+    public void deleteMatch(UUID matchUUID) {
+        ongoingMatchRepository.delete(matchUUID);
+    }
+
     private Player getOrCreateByName(String name) {
         PlayerEntity playerEntity = playerRepository.findPlayerByName(name)
                 .orElseGet(() -> playerRepository.save(

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ru.prplhd.tennisscoreboard.dto.match.MatchDto;
+import ru.prplhd.tennisscoreboard.service.FinishedMatchesPersistenceService;
 import ru.prplhd.tennisscoreboard.service.OngoingMatchService;
 import ru.prplhd.tennisscoreboard.web.ServletContextKeys;
 
@@ -17,11 +18,13 @@ import java.util.UUID;
 public class MatchScoreServlet extends HttpServlet {
 
     private OngoingMatchService ongoingMatchService;
+    private FinishedMatchesPersistenceService finishedMatchesPersistenceService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         ongoingMatchService = (OngoingMatchService) getServletContext().getAttribute(ServletContextKeys.ONGOING_MATCH_SERVICE);
+        finishedMatchesPersistenceService = (FinishedMatchesPersistenceService) getServletContext().getAttribute(ServletContextKeys.FINISHED_MATCHES_PERSISTENCE_SERVICE);
     }
 
     @Override
@@ -43,7 +46,11 @@ public class MatchScoreServlet extends HttpServlet {
 
         if (matchDto.winner() == null) {
             resp.sendRedirect("/match-score?uuid=" + matchUUID, HttpServletResponse.SC_SEE_OTHER);
+
         } else {
+            ongoingMatchService.deleteMatch(matchUUID);
+            finishedMatchesPersistenceService.saveMatch(matchDto);
+
             req.setAttribute("matchDto", matchDto);
             req.setAttribute("matchUUID", matchUUID);
             req.getRequestDispatcher("/WEB-INF/jsp/match-score.jsp").forward(req, resp);

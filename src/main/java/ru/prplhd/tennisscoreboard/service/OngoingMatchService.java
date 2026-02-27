@@ -11,4 +11,6 @@ public interface OngoingMatchService {
     MatchDto getMatchScoreboard(UUID matchUUID);
 
     MatchDto applyPoint(UUID matchUUID, Integer scorerId);
+
+    void deleteMatch(UUID matchUUID);
 }

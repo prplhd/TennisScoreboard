@@ -13,4 +13,5 @@ public final class ServletContextKeys {
     public static final String ONGOING_MATCH_REPOSITORY = "ongoingMatchRepository";
 
     public static final String ONGOING_MATCH_SERVICE = "ongoingMatchService";
+    public static final String FINISHED_MATCHES_PERSISTENCE_SERVICE = "finishedMatchesPersistenceService";
 }
