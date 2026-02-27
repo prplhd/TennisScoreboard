@@ -26,9 +26,7 @@
         </td>
         <td class="table-text">
             <c:if test="${requestScope.matchDto.firstPlayer == requestScope.matchDto.winner}">
-                <img class="winner-cup"
-                     src="../../images/cup.png" alt="winner"
-                     style="height:1.5em; width:auto; display:inline-block; vertical-align:middle;">
+                <img class="winner-cup" src="../../images/cup.png" alt="winner">
             </c:if>
         </td>
     </tr>
@@ -48,9 +46,7 @@
         </td>
         <td class="table-text">
             <c:if test="${requestScope.matchDto.secondPlayer == requestScope.matchDto.winner}">
-                <img class="winner-cup"
-                     src="../../images/cup.png" alt="winner"
-                     style="height:1.5em; width:auto; display:inline-block; vertical-align:middle;">
+                <img class="winner-cup" src="../../images/cup.png" alt="winner">
             </c:if>
         </td>
     </tr>

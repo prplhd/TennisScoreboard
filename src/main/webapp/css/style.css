@@ -507,3 +507,10 @@ footer {
 .num-page.current {
     font-weight: bold;
 }
+
+.winner-cup {
+    height: 1.5em;
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
