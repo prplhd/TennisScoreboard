@@ -36,12 +36,13 @@ public class OngoingMatchServiceImpl implements OngoingMatchService{
     @Override
     public MatchDto getMatchScoreboard(UUID matchUUID) {
         Match match = ongoingMatchRepository.findById(matchUUID);
+
         return match.getScoreboard();
     }
 
     @Override
-    public void applyPoint(UUID matchUUID, Integer scorerId) {
-        ongoingMatchRepository.applyPoint(matchUUID, scorerId);
+    public MatchDto applyPoint(UUID matchUUID, Integer scorerId) {
+        return ongoingMatchRepository.applyPoint(matchUUID, scorerId).getScoreboard();
     }
 
     private Player getOrCreateByName(String name) {

@@ -10,5 +10,5 @@ public interface OngoingMatchService {
 
     MatchDto getMatchScoreboard(UUID matchUUID);
 
-    void applyPoint(UUID matchUUID, Integer scorerId);
+    MatchDto applyPoint(UUID matchUUID, Integer scorerId);
 }

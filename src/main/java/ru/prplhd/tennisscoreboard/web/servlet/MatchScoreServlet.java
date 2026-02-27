@@ -39,8 +39,14 @@ public class MatchScoreServlet extends HttpServlet {
         UUID matchUUID = UUID.fromString(req.getParameter("uuid"));
         Integer scorerId = Integer.valueOf(req.getParameter("scorerId"));
 
-        ongoingMatchService.applyPoint(matchUUID, scorerId);
+        MatchDto matchDto = ongoingMatchService.applyPoint(matchUUID, scorerId);
 
-        resp.sendRedirect("/match-score?uuid=" + matchUUID, HttpServletResponse.SC_SEE_OTHER);
+        if (matchDto.winner() == null) {
+            resp.sendRedirect("/match-score?uuid=" + matchUUID, HttpServletResponse.SC_SEE_OTHER);
+        } else {
+            req.setAttribute("matchDto", matchDto);
+            req.setAttribute("matchUUID", matchUUID);
+            req.getRequestDispatcher("/WEB-INF/jsp/match-score.jsp").forward(req, resp);
+        }
     }
 }
