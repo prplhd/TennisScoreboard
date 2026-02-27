@@ -49,13 +49,23 @@
                 <th>Player Two</th>
                 <th>Winner</th>
             </tr>
-            <c:forEach var="finishedMatch" items="${requestScope.finishedMatchesDtos}">
-                <tr>
-                    <td>${finishedMatch.firstPlayerName}</td>
-                    <td>${finishedMatch.secondPlayerName}</td>
-                    <td><span class="winner-name-td">${finishedMatch.winnerName}</span></td>
-                </tr>
-            </c:forEach>
+            <c:choose>
+                <c:when test="${requestScope.finishedMatchesDtos[0] == null}">
+                    <td></td>
+                    <td>No matches yet</td>
+                    <td></td>
+                </c:when>
+                <c:otherwise>
+                    <c:forEach var="finishedMatch" items="${requestScope.finishedMatchesDtos}">
+                        <tr>
+                            <td>${finishedMatch.firstPlayerName}</td>
+                            <td>${finishedMatch.secondPlayerName}</td>
+                            <td><span class="winner-name-td">${finishedMatch.winnerName}</span></td>
+                        </tr>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
+
         </table>
 
         <div class="pagination">
