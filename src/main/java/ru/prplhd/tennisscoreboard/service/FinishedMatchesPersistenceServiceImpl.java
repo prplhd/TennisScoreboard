@@ -44,6 +44,29 @@ public class FinishedMatchesPersistenceServiceImpl implements FinishedMatchesPer
     }
 
     @Override
+    public FinishedMatchesPageDto getMatchesPage(String pageParameterValue, String name) {
+        int matchesCount = Math.toIntExact(matchRepository.countAllByPlayerName(name));
+        int totalPages = PaginationHelper.getTotalPages(matchesCount);
+
+        int page = PaginationHelper.getPage(pageParameterValue, totalPages);
+
+        int offset = PaginationHelper.getOffset(page);
+
+        List<MatchEntity> matches = matchRepository.findMatchesByName(offset, PaginationHelper.DEFAULT_PAGE_LIMIT_SIZE, name);
+        List<FinishedMatchesDto> matchesDtos = toDtos(matches);
+
+        Map<String, Integer> pagesWindow = PaginationHelper.getPagesWindow(page, totalPages);
+
+        return new FinishedMatchesPageDto(
+                matchesDtos,
+                page,
+                totalPages,
+                pagesWindow.get("start"),
+                pagesWindow.get("end")
+        );
+    }
+
+    @Override
     public void saveMatch(MatchDto matchDto) {
         PlayerEntity firstPlayer = playerRepository.findPlayerByName(matchDto.firstPlayer().getName())
                 .orElseThrow(RuntimeException::new);

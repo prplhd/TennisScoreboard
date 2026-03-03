@@ -11,6 +11,7 @@ import ru.prplhd.tennisscoreboard.service.FinishedMatchesPersistenceService;
 import ru.prplhd.tennisscoreboard.web.ServletContextKeys;
 
 import java.io.IOException;
+import java.util.Locale;
 
 @WebServlet("/matches")
 public class FinishedMatchesServlet extends HttpServlet {
@@ -26,8 +27,17 @@ public class FinishedMatchesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pageParameterValue = req.getParameter("page");
+        String nameParameterValue = req.getParameter("name");
 
-        FinishedMatchesPageDto finishedMatchesPageDto = finishedMatchesPersistenceService.getMatchesPage(pageParameterValue);
+        FinishedMatchesPageDto finishedMatchesPageDto;
+
+        if (nameParameterValue != null) {
+            String name = nameParameterValue.trim().toLowerCase(Locale.ROOT);
+            finishedMatchesPageDto = finishedMatchesPersistenceService.getMatchesPage(pageParameterValue, name);
+
+        } else {
+            finishedMatchesPageDto = finishedMatchesPersistenceService.getMatchesPage(pageParameterValue);
+        }
 
         req.setAttribute("finishedMatchesPageDto", finishedMatchesPageDto);
         req.getRequestDispatcher("/WEB-INF/jsp/matches.jsp").forward(req, resp);

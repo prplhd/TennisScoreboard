@@ -24,7 +24,7 @@ public class MatchRepositoryImpl extends BaseRepository<Integer, MatchEntity> im
             """;
 
     private static final String FILTER_BY_NAME_HQL = """
-            WHERE (m.player1.name = :name OR m.player2.name = :name)
+            WHERE (lower(m.player1.name) = :name OR lower(m.player2.name) = :name)
             """;
 
     private static final String DESC_ORDER_BY_ID = """
@@ -34,7 +34,7 @@ public class MatchRepositoryImpl extends BaseRepository<Integer, MatchEntity> im
     @Override
     public List<MatchEntity> findMatches(int offset, int limit) {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery(FIND_ALL_MATCHES, clazz)
+        return session.createQuery(FIND_ALL_MATCHES + DESC_ORDER_BY_ID, clazz)
                 .setMaxResults(limit)
                 .setFirstResult(offset)
                 .getResultList();
@@ -59,5 +59,5 @@ public class MatchRepositoryImpl extends BaseRepository<Integer, MatchEntity> im
     @Override
     public long countAllByPlayerName(String name) {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery(COUNT_ALL_MATCHES_HQL + FILTER_BY_NAME_HQL, Long.class).uniqueResult();    }
+        return session.createQuery(COUNT_ALL_MATCHES_HQL + FILTER_BY_NAME_HQL, Long.class).setParameter("name", name).uniqueResult();    }
 }

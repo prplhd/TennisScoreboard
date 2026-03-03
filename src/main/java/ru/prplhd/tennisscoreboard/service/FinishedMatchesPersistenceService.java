@@ -6,5 +6,6 @@ import ru.prplhd.tennisscoreboard.dto.match.ongoing.MatchDto;
 public interface FinishedMatchesPersistenceService {
 
     FinishedMatchesPageDto getMatchesPage(String pageParameterValue);
+    FinishedMatchesPageDto getMatchesPage(String pageParameterValue, String name);
     void saveMatch(MatchDto matchDto);
 }
