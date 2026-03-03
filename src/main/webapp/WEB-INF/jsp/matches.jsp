@@ -35,12 +35,17 @@
     <div class="container">
         <h1>Matches</h1>
         <div class="input-container">
-            <input class="input-filter" placeholder="Filter by name" type="text" />
-            <div>
-                <a href="#">
-                    <button class="btn-filter">Reset Filter</button>
-                </a>
-            </div>
+            <form method="get" action="${pageContext.request.contextPath}/matches">
+                <input class="input-filter"
+                       type="text"
+                       name="name"
+                       value="${param.name}"
+                       placeholder="Filter by name" />
+
+                <button class="btn-filter" type="submit">Filter</button>
+
+                <a class="btn-filter" href="${pageContext.request.contextPath}/matches">Reset filter</a>
+            </form>
         </div>
 
         <table class="table-matches">
@@ -68,59 +73,79 @@
 
         </table>
 
-        <div class="pagination">
-            <c:choose>
-                <c:when test="${requestScope.finishedMatchesPageDto.page > 1}">
-                    <a class="prev" href="?page=${requestScope.finishedMatchesPageDto.page - 1}"> < </a>
-                </c:when>
-                <c:otherwise>
-                    <span class="disabled prev"> < </span>
-                </c:otherwise>
-            </c:choose>
-            
-            <c:if test="${requestScope.finishedMatchesPageDto.start > 1}">
-                <a class="num-page" href="?page=1">1</a>
-                <c:if test="${requestScope.finishedMatchesPageDto.start > 2}">
-                    <span class="dots">...</span>
-                </c:if>
-            </c:if>
+        <c:if test="${requestScope.finishedMatchesPageDto.matchesDtos[0] != null}">
+            <div class="pagination">
+                <c:choose>
+                    <c:when test="${requestScope.finishedMatchesPageDto.page > 1}">
+                        <c:url var="url" value="${pageContext.request.contextPath}/matches">
+                            <c:param name="page" value="${requestScope.finishedMatchesPageDto.page - 1}" />
+                            <c:if test="${not empty param.name}">
+                                <c:param name="name" value="${param.name}" />
+                            </c:if>
+                        </c:url>
+                        <a class="prev" href="${url}"> < </a>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="disabled prev"> < </span>
+                    </c:otherwise>
+                </c:choose>
 
-            <c:forEach var="page" begin="${requestScope.finishedMatchesPageDto.start}" end="${requestScope.finishedMatchesPageDto.end}">
-                <a class="num-page
+                <c:if test="${requestScope.finishedMatchesPageDto.start > 1}">
+                    <c:url var="url" value="${pageContext.request.contextPath}/matches">
+                        <c:param name="page" value="1" />
+                        <c:if test="${not empty param.name}">
+                            <c:param name="name" value="${param.name}" />
+                        </c:if>
+                    </c:url>
+                    <a class="num-page" href="${url}">1</a>
+                    <c:if test="${requestScope.finishedMatchesPageDto.start > 2}">
+                        <span class="dots">...</span>
+                    </c:if>
+                </c:if>
+
+                <c:forEach var="page" begin="${requestScope.finishedMatchesPageDto.start}" end="${requestScope.finishedMatchesPageDto.end}">
+                    <c:url var="url" value="${pageContext.request.contextPath}/matches">
+                        <c:param name="page" value="${page}" />
+                        <c:if test="${not empty param.name}">
+                            <c:param name="name" value="${param.name}" />
+                        </c:if>
+                    </c:url>
+                    <a class="num-page
                    ${page == requestScope.finishedMatchesPageDto.page ? 'current' : ''}"
-                   href="?page=${page}">${page}</a>
-            </c:forEach>
+                       href="${url}">${page}</a>
+                </c:forEach>
 
-            <c:if test="${requestScope.finishedMatchesPageDto.end < requestScope.finishedMatchesPageDto.totalPages}">
-                <c:if test="${requestScope.finishedMatchesPageDto.end < requestScope.finishedMatchesPageDto.totalPages - 1}">
-                    <span class="dots">...</span>
+                <c:if test="${requestScope.finishedMatchesPageDto.end < requestScope.finishedMatchesPageDto.totalPages}">
+                    <c:if test="${requestScope.finishedMatchesPageDto.end < requestScope.finishedMatchesPageDto.totalPages - 1}">
+                        <span class="dots">...</span>
+                    </c:if>
+                    <c:url var="url" value="${pageContext.request.contextPath}/matches">
+                        <c:param name="page" value="${requestScope.finishedMatchesPageDto.totalPages}" />
+                        <c:if test="${not empty param.name}">
+                            <c:param name="name" value="${param.name}" />
+                        </c:if>
+                    </c:url>
+                    <a class="num-page" href="${url}">${requestScope.finishedMatchesPageDto.totalPages}</a>
                 </c:if>
-                <a class="num-page" href="?page=${requestScope.finishedMatchesPageDto.totalPages}">${requestScope.finishedMatchesPageDto.totalPages}</a>
-            </c:if>
 
-            <c:choose>
-                <c:when test="${requestScope.finishedMatchesPageDto.page < requestScope.finishedMatchesPageDto.totalPages}">
-                    <a class="next" href="?page=${requestScope.finishedMatchesPageDto.page + 1}"> > </a>
-                </c:when>
-                <c:otherwise>
-                    <span class="disabled next"> > </span>
-                </c:otherwise>
-            </c:choose>
+                <c:choose>
+                    <c:when test="${requestScope.finishedMatchesPageDto.page < requestScope.finishedMatchesPageDto.totalPages}">
+                        <c:url var="url" value="${pageContext.request.contextPath}/matches">
+                            <c:param name="page" value="${requestScope.finishedMatchesPageDto.page + 1}" />
+                            <c:if test="${not empty param.name}">
+                                <c:param name="name" value="${param.name}" />
+                            </c:if>
+                        </c:url>
+                        <a class="next" href="${url}"> > </a>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="disabled next"> > </span>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </c:if>
 
-
-<%--            <a class="prev" href="#"> < </a>--%>
-<%--            <a class="num-page current" href="#">1</a>--%>
-<%--            <a class="num-page" href="#">2</a>--%>
-<%--            <a class="num-page" href="#">3</a>--%>
-<%--            <a class="next" href="#"> > </a>--%>
-        </div>
     </div>
 </main>
-<footer>
-    <div class="footer">
-        <p>&copy; Tennis Scoreboard, project from <a href="https://zhukovsd.github.io/java-backend-learning-course/">zhukovsd/java-backend-learning-course</a>
-            roadmap.</p>
-    </div>
-</footer>
 </body>
 </html>

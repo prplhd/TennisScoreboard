@@ -1,32 +1,53 @@
-/* Убираем внешние отступы */
+/* =========================
+   DARK THEME (single theme)
+   Footer styles removed
+   ========================= */
+
+/* Reset margins */
 body,
-h1,
-h2,
-h3,
-h4,
+h1, h2, h3, h4,
 p,
-ul[class],
-ol[class],
+ul[class], ol[class],
 li,
-figure,
-figcaption,
-blockquote,
-dl,
-dd {
+figure, figcaption,
+blockquote, dl, dd {
     margin: 0;
 }
 
-/* Base Styles */
+/* Theme tokens */
+:root {
+    --bg: #0f1218;
+
+    --surface: #151a23;
+    --surface-2: #1b2230;
+    --surface-3: #222b3d;
+
+    --text: #e7ecf5;
+    --text-muted: #b5c0d6;
+
+    --border: rgba(231, 236, 245, 0.12);
+
+    --accent: #4aa8ff;
+    --accent-2: #2f8ef0;
+    --accent-text: #ffffff;
+
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* Base styles */
 body {
     min-height: 100vh;
-    margin: 0;
     padding: 0;
     scroll-behavior: smooth;
     text-rendering: optimizeSpeed;
     line-height: 1.5;
+
     font-family: "Poppins", sans-serif;
     font-weight: 300;
     font-style: normal;
+
+    background: var(--bg);
+    color: var(--text);
 }
 
 input,
@@ -34,6 +55,7 @@ button,
 textarea,
 select {
     font: inherit;
+    color: inherit;
 }
 
 span {
@@ -52,36 +74,33 @@ main {
 
 body h1 {
     font-size: 37px;
-    font-weight: bold;
+    font-weight: 700;
+    color: var(--text);
 }
 
 p {
     font-size: 21px;
+    color: var(--text-muted);
 }
 
-header {
-    height: 50px;
-}
+header { height: 50px; }
 
+/* Header */
 .nav-header {
     display: flex;
     justify-content: space-between;
     padding: 10px 35px;
-    border-bottom: 2px solid #ccc;
     align-items: center;
     position: relative;
-    background: #fff;
+
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
 }
 
-footer {
-    display: flex;
-    justify-content: space-between;
-    height: 50px;
-    padding: 0 35px;
-    border-top: 2px solid #ccc;
-    align-items: center;
-}
+/* IMPORTANT: footer styles intentionally removed (as requested) */
 
+/* Brand */
 .brand {
     display: flex;
     align-items: center;
@@ -94,8 +113,10 @@ footer {
 
 .logo-text {
     margin-left: 15px;
+    color: var(--text);
 }
 
+/* Nav links */
 .nav-links {
     display: flex;
     align-items: center;
@@ -107,13 +128,15 @@ footer {
 
 .nav-link {
     font-size: 19px;
-    color: #000;
+    color: var(--text);
     text-decoration: none;
 }
 
-.center {
-    margin: 0 auto;
+.nav-link:hover {
+    color: var(--accent);
 }
+
+.center { margin: 0 auto; }
 
 .homepage-action-button {
     display: block;
@@ -121,7 +144,7 @@ footer {
     width: 100%;
 }
 
-/* Welcome Section */
+/* Welcome section */
 .welcome-image {
     border-radius: 30px;
     margin-top: 20px;
@@ -129,22 +152,25 @@ footer {
     background-position: center;
     min-height: 50vh;
     background-size: cover;
+    box-shadow: var(--shadow);
 }
 
-.view-results, .start-match {
+/* Main page buttons: BOTH BLUE */
+.view-results,
+.start-match {
     border-radius: 23px;
     cursor: pointer;
     font-size: 20px;
     padding: 9px 0;
+
+    background-color: var(--accent);
+    color: var(--accent-text);
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.view-results {
-    background-color: #e7e7e7;
-}
-
-.start-match {
-    background-color: #42a7f5;
-    color: #fff;
+.view-results:hover,
+.start-match:hover {
+    background-color: var(--accent-2);
 }
 
 .btn {
@@ -152,20 +178,20 @@ footer {
     width: 100%;
 }
 
-/* Additional Styles for Dropdown Navigation */
+/* Dropdown navigation */
 .nav-toggle {
     display: none;
 }
 
 /* New Match */
-
 .new-match-image {
     border-radius: 30px;
     margin: 20px 0;
     background-image: url('../images/racket.png');
-    height: 503px;
+    height: 360px;
     background-size: cover;
     background-position: center;
+    box-shadow: var(--shadow);
 }
 
 .form-container {
@@ -175,21 +201,22 @@ footer {
 
 .label-player {
     display: block;
+    margin: 20px 0 3px;
+    color: var(--text-muted);
 }
 
 .input-player {
     width: 100%;
     padding: 12px 10px;
-    border: 1px solid #ccc;
     border-radius: 18px;
+
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
 }
 
-.input-player::-webkit-input-placeholder {
-    color: #42a7f5;
-}
-
-.label-player {
-    margin: 20px 0 3px;
+.input-player::placeholder {
+    color: rgba(181, 192, 214, 0.75);
 }
 
 .form-button {
@@ -198,26 +225,43 @@ footer {
     margin-top: 30px;
     padding: 10px 0;
     border-radius: 18px;
-    border: none;
-    background-color: #42a7f5;
-    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    background-color: var(--accent);
+    color: var(--accent-text);
     font-size: 24px;
     cursor: pointer;
 }
 
+.form-button:hover {
+    background-color: var(--accent-2);
+}
+
+/* Filter button (works for button and <a class="btn-filter">) */
 .btn-filter {
     width: 280px;
     line-height: 45px;
-    margin-left: 20px;
     border-radius: 18px;
-    border: none;
-    background-color: #42a7f5;
-    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background-color: var(--accent);
+    color: var(--accent-text);
     cursor: pointer;
+    text-align: center;
+}
+
+.btn-filter:hover {
+    background-color: var(--accent-2);
+}
+
+a.btn-filter {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: var(--accent-text);
 }
 
 /* Current match */
-
 .current-match-image {
     border-radius: 30px;
     margin-top: 20px;
@@ -225,63 +269,59 @@ footer {
     background-position: center;
     min-height: 30vh;
     background-size: cover;
+    box-shadow: var(--shadow);
 }
 
-.score-container {
-    position: relative;
-}
+.score-container { position: relative; }
 
-.score-img {
-    border-radius: 15px;
-}
+.score-img { border-radius: 15px; }
 
 .score-text {
     font-size: 51px;
-    color: #fff;
+    color: var(--accent-text);
 }
 
 .score {
-    border: 1px solid #ccc;
+    border: 1px solid var(--border);
     border-radius: 12px;
     margin-top: 35px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
 }
 
 .table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
-}
-
-.table tr {
-    padding-left: 10px;
+    color: var(--text);
 }
 
 .table th {
     padding: 5px;
-    border-bottom: 1px solid #dddddd;
-}
-
-.table tr:first-child {
-    padding: 5px;
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    font-weight: 400;
 }
 
 .result th {
-    font-weight: 400;
     padding-left: 10px;
 }
 
 .player1, .player2 {
     font-size: 40px;
+    color: var(--text);
 }
 
 .player1 td, .player2 td {
     width: 5%;
     padding: 60px 5px;
+
     font-family: "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-weight: 300;
     font-style: normal;
+
+    color: var(--text);
 }
 
 .table-text + .table-text {
@@ -290,44 +330,29 @@ footer {
 
 .score-btn {
     font-size: 20px;
-    background-color: #42a7f5;
-    color: #fff;
-    border: none;
+    background-color: var(--accent);
+    color: var(--accent-text);
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 15px;
+
     padding: 12px 30px;
     margin-right: 30px;
     cursor: pointer;
 }
 
-/* Responsive Styles */
+.score-btn:hover {
+    background-color: var(--accent-2);
+}
+
+/* Responsive styles */
 @media (max-width: 992px) {
-    .container {
-        width: 90%;
-    }
-
-    .form-container {
-        width: 50%;
-    }
-
-    .nav-link {
-        font-size: 17px;
-    }
-
-    body h1 {
-        font-size: 32px;
-    }
-
-    p {
-        font-size: 18px;
-    }
-
-    .nav-header {
-        padding: 10px 20px;
-    }
-
-    footer {
-        padding: 0 20px;
-    }
+    .container { width: 90%; }
+    .form-container { width: 50%; }
+    .nav-link { font-size: 17px; }
+    body h1 { font-size: 32px; }
+    p { font-size: 18px; }
+    .nav-header { padding: 10px 20px; }
 }
 
 @media (max-width: 768px) {
@@ -340,9 +365,7 @@ footer {
         box-sizing: border-box;
     }
 
-    .form-container {
-        width: 80%;
-    }
+    .form-container { width: 80%; }
 
     .nav-header {
         flex-direction: column;
@@ -355,76 +378,36 @@ footer {
         display: none;
     }
 
-    .nav-links.active {
-        display: flex;
-    }
+    .nav-links.active { display: flex; }
 
-    .nav-link + .nav-link {
-        margin-left: 0;
-    }
+    .nav-link + .nav-link { margin-left: 0; }
 
     .nav-toggle {
         display: block;
         cursor: pointer;
         font-size: 24px;
         margin-left: auto;
+        color: var(--text);
     }
 }
 
 @media (max-width: 576px) {
-    .form-container {
-        width: 100%;
-    }
-
-    .nav-link {
-        font-size: 16px;
-    }
-
-    body h1 {
-        font-size: 28px;
-    }
-
-    p {
-        font-size: 16px;
-    }
+    .form-container { width: 100%; }
+    .nav-link { font-size: 16px; }
+    body h1 { font-size: 28px; }
+    p { font-size: 16px; }
 
     .nav-header {
         position: absolute;
-        background-color: white;
+        background-color: var(--surface);
         width: 100%;
         padding: 10px 15px;
         box-sizing: border-box;
     }
-
-    footer {
-        padding: 0 15px;
-        flex-direction: column;
-        text-align: center;
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-toggle {
-        display: block;
-        cursor: pointer;
-        font-size: 24px;
-    }
-
-    .nav-links {
-        display: none;
-        flex-direction: column;
-    }
-
-    .nav-links.active {
-        display: flex;
-    }
 }
 
 /* Finished matches */
-
-.form-matches {
-    width: 100%;
-}
+.form-matches { width: 100%; }
 
 .input-container {
     width: 100%;
@@ -432,15 +415,29 @@ footer {
     margin-top: 20px;
 }
 
-.input-filter {
+.input-container form {
+    display: flex;
+    align-items: center;
+    gap: 20px;
     width: 100%;
+}
+
+.input-filter {
     border-radius: 15px;
-    background-color: #dddddd;
-    border: none;
+    background-color: var(--surface-2);
+    border: 1px solid var(--border);
     padding-left: 30px;
     padding-bottom: 12px;
     padding-top: 12px;
-    color: #000;
+    color: var(--text);
+
+    flex: 1;
+    min-width: 0;
+    width: auto;
+}
+
+.input-filter::placeholder {
+    color: rgba(181, 192, 214, 0.75);
 }
 
 .table-matches {
@@ -448,64 +445,85 @@ footer {
     width: 100%;
     margin-bottom: 20px;
     border-collapse: collapse;
-    border: 1px solid #ccc;
+
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
 }
 
 .table-matches th {
-    font-weight: bold;
-    padding: 5px;
-    background: #dddddd;
-    border: 1px solid #dddddd;
+    font-weight: 700;
+    padding: 8px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
 }
 
 .table-matches td {
     width: 33%;
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid var(--border);
     padding: 51px 0;
     text-align: center;
+    color: var(--text);
 }
 
-.table-matches tr td:first-child, .table-matches tr th:first-child {
+.table-matches tr td:first-child,
+.table-matches tr th:first-child {
     border-left: none;
 }
 
-.table-matches tr td:last-child, .table-matches tr th:last-child {
+.table-matches tr td:last-child,
+.table-matches tr th:last-child {
     border-right: none;
 }
 
 .winner-name-td {
-    background-color: #dddddd;
+    background-color: var(--surface-2);
     display: block;
-    width: 70%;
+    width: 85%;
     margin: 0 auto;
     border-radius: 18px;
+    border: 1px solid var(--border);
+    color: var(--text);
 }
 
+/* Pagination */
 .prev, .next {
     text-decoration: none;
     font-size: 40px;
-    color: #000;
+    color: var(--text);
 }
 
-.next {
-    margin-left: 20px;
+.prev:hover, .next:hover {
+    color: var(--accent);
 }
+
+.next { margin-left: 20px; }
 
 .pagination {
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    color: var(--text);
 }
 
 .num-page {
     margin-left: 20px;
     text-decoration: none;
-    color: black;
+    color: var(--text);
+}
+
+.num-page:hover {
+    color: var(--accent);
 }
 
 .num-page.current {
-    font-weight: bold;
+    font-weight: 600;
+    color: var(--accent-text);
+    background: var(--accent);
+    border-radius: 12px;
+    padding: 6px 12px;
 }
 
 .winner-cup {
@@ -523,4 +541,5 @@ footer {
 
 .dots {
     margin-left: 20px;
+    color: var(--text-muted);
 }
