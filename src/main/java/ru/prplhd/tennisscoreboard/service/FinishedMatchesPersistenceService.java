@@ -1,12 +1,10 @@
 package ru.prplhd.tennisscoreboard.service;
 
-import ru.prplhd.tennisscoreboard.dto.match.FinishedMatchesDto;
-import ru.prplhd.tennisscoreboard.dto.match.MatchDto;
-
-import java.util.List;
+import ru.prplhd.tennisscoreboard.dto.FinishedMatchesPageDto;
+import ru.prplhd.tennisscoreboard.dto.match.ongoing.MatchDto;
 
 public interface FinishedMatchesPersistenceService {
 
-    List<FinishedMatchesDto> findAllMatches();
+    FinishedMatchesPageDto getMatchesPage(String pageParameterValue);
     void saveMatch(MatchDto matchDto);
 }

@@ -476,7 +476,7 @@ footer {
 .winner-name-td {
     background-color: #dddddd;
     display: block;
-    width: 38%;
+    width: 70%;
     margin: 0 auto;
     border-radius: 18px;
 }
@@ -513,4 +513,14 @@ footer {
     width: auto;
     display: inline-block;
     vertical-align: middle;
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.dots {
+    margin-left: 20px;
 }

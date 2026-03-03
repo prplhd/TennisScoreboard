@@ -1,8 +1,8 @@
 package ru.prplhd.tennisscoreboard.domain.score;
 
 import ru.prplhd.tennisscoreboard.domain.PlayerSide;
-import ru.prplhd.tennisscoreboard.dto.match.ScoreDto;
-import ru.prplhd.tennisscoreboard.dto.match.SetScoreDto;
+import ru.prplhd.tennisscoreboard.dto.match.ongoing.ScoreDto;
+import ru.prplhd.tennisscoreboard.dto.match.ongoing.SetScoreDto;
 
 import java.util.ArrayList;
 import java.util.EnumMap;

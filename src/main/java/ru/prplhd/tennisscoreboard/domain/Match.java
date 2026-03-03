@@ -2,7 +2,7 @@ package ru.prplhd.tennisscoreboard.domain;
 
 import ru.prplhd.tennisscoreboard.domain.score.Score;
 import ru.prplhd.tennisscoreboard.domain.score.ScoreEffect;
-import ru.prplhd.tennisscoreboard.dto.match.MatchDto;
+import ru.prplhd.tennisscoreboard.dto.match.ongoing.MatchDto;
 
 import java.util.Objects;
 

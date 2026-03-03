@@ -50,13 +50,13 @@
                 <th>Winner</th>
             </tr>
             <c:choose>
-                <c:when test="${requestScope.finishedMatchesDtos[0] == null}">
+                <c:when test="${requestScope.finishedMatchesPageDto.matchesDtos[0] == null}">
                     <td></td>
                     <td>No matches yet</td>
                     <td></td>
                 </c:when>
                 <c:otherwise>
-                    <c:forEach var="finishedMatch" items="${requestScope.finishedMatchesDtos}">
+                    <c:forEach var="finishedMatch" items="${requestScope.finishedMatchesPageDto.matchesDtos}">
                         <tr>
                             <td>${finishedMatch.firstPlayerName}</td>
                             <td>${finishedMatch.secondPlayerName}</td>
@@ -69,11 +69,50 @@
         </table>
 
         <div class="pagination">
-            <a class="prev" href="#"> < </a>
-            <a class="num-page current" href="#">1</a>
-            <a class="num-page" href="#">2</a>
-            <a class="num-page" href="#">3</a>
-            <a class="next" href="#"> > </a>
+            <c:choose>
+                <c:when test="${requestScope.finishedMatchesPageDto.page > 1}">
+                    <a class="prev" href="?page=${requestScope.finishedMatchesPageDto.page - 1}"> < </a>
+                </c:when>
+                <c:otherwise>
+                    <span class="disabled prev"> < </span>
+                </c:otherwise>
+            </c:choose>
+            
+            <c:if test="${requestScope.finishedMatchesPageDto.start > 1}">
+                <a class="num-page" href="?page=1">1</a>
+                <c:if test="${requestScope.finishedMatchesPageDto.start > 2}">
+                    <span class="dots">...</span>
+                </c:if>
+            </c:if>
+
+            <c:forEach var="page" begin="${requestScope.finishedMatchesPageDto.start}" end="${requestScope.finishedMatchesPageDto.end}">
+                <a class="num-page
+                   ${page == requestScope.finishedMatchesPageDto.page ? 'current' : ''}"
+                   href="?page=${page}">${page}</a>
+            </c:forEach>
+
+            <c:if test="${requestScope.finishedMatchesPageDto.end < requestScope.finishedMatchesPageDto.totalPages}">
+                <c:if test="${requestScope.finishedMatchesPageDto.end < requestScope.finishedMatchesPageDto.totalPages - 1}">
+                    <span class="dots">...</span>
+                </c:if>
+                <a class="num-page" href="?page=${requestScope.finishedMatchesPageDto.totalPages}">${requestScope.finishedMatchesPageDto.totalPages}</a>
+            </c:if>
+
+            <c:choose>
+                <c:when test="${requestScope.finishedMatchesPageDto.page < requestScope.finishedMatchesPageDto.totalPages}">
+                    <a class="next" href="?page=${requestScope.finishedMatchesPageDto.page + 1}"> > </a>
+                </c:when>
+                <c:otherwise>
+                    <span class="disabled next"> > </span>
+                </c:otherwise>
+            </c:choose>
+
+
+<%--            <a class="prev" href="#"> < </a>--%>
+<%--            <a class="num-page current" href="#">1</a>--%>
+<%--            <a class="num-page" href="#">2</a>--%>
+<%--            <a class="num-page" href="#">3</a>--%>
+<%--            <a class="next" href="#"> > </a>--%>
         </div>
     </div>
 </main>

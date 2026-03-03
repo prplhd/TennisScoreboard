@@ -1,7 +1,7 @@
 package ru.prplhd.tennisscoreboard.service;
 
-import ru.prplhd.tennisscoreboard.dto.match.MatchDto;
-import ru.prplhd.tennisscoreboard.dto.request.NewMatchRequestDto;
+import ru.prplhd.tennisscoreboard.dto.match.ongoing.MatchDto;
+import ru.prplhd.tennisscoreboard.dto.NewMatchRequestDto;
 
 import java.util.UUID;
 

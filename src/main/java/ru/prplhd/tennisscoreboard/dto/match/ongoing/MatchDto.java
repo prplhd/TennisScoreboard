@@ -1,4 +1,4 @@
-package ru.prplhd.tennisscoreboard.dto.match;
+package ru.prplhd.tennisscoreboard.dto.match.ongoing;
 
 import ru.prplhd.tennisscoreboard.domain.Player;
 

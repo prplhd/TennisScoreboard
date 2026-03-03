@@ -6,12 +6,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ru.prplhd.tennisscoreboard.dto.match.FinishedMatchesDto;
+import ru.prplhd.tennisscoreboard.dto.FinishedMatchesPageDto;
 import ru.prplhd.tennisscoreboard.service.FinishedMatchesPersistenceService;
 import ru.prplhd.tennisscoreboard.web.ServletContextKeys;
 
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/matches")
 public class FinishedMatchesServlet extends HttpServlet {
@@ -26,9 +25,11 @@ public class FinishedMatchesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<FinishedMatchesDto> finishedMatchesDtos = finishedMatchesPersistenceService.findAllMatches();
+        String pageParameterValue = req.getParameter("page");
 
-        req.setAttribute("finishedMatchesDtos", finishedMatchesDtos);
+        FinishedMatchesPageDto finishedMatchesPageDto = finishedMatchesPersistenceService.getMatchesPage(pageParameterValue);
+
+        req.setAttribute("finishedMatchesPageDto", finishedMatchesPageDto);
         req.getRequestDispatcher("/WEB-INF/jsp/matches.jsp").forward(req, resp);
     }
 }

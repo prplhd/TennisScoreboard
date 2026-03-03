@@ -1,15 +1,18 @@
 package ru.prplhd.tennisscoreboard.service;
 
 import lombok.RequiredArgsConstructor;
-import ru.prplhd.tennisscoreboard.dto.match.FinishedMatchesDto;
-import ru.prplhd.tennisscoreboard.dto.match.MatchDto;
+import ru.prplhd.tennisscoreboard.dto.match.finished.FinishedMatchesDto;
+import ru.prplhd.tennisscoreboard.dto.FinishedMatchesPageDto;
+import ru.prplhd.tennisscoreboard.dto.match.ongoing.MatchDto;
 import ru.prplhd.tennisscoreboard.repository.MatchRepository;
 import ru.prplhd.tennisscoreboard.repository.PlayerRepository;
 import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.MatchEntity;
 import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.PlayerEntity;
+import ru.prplhd.tennisscoreboard.util.PaginationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -17,23 +20,27 @@ public class FinishedMatchesPersistenceServiceImpl implements FinishedMatchesPer
     private final PlayerRepository playerRepository;
     private final MatchRepository matchRepository;
 
-
     @Override
-    public List<FinishedMatchesDto> findAllMatches() {
-        List<FinishedMatchesDto> finishedMatchesDtos = new ArrayList<>();
-        List<MatchEntity> matches = matchRepository.findAll();
+    public FinishedMatchesPageDto getMatchesPage(String pageParameterValue) {
+        int matchesCount = Math.toIntExact(matchRepository.countAll());
+        int totalPages = PaginationHelper.getTotalPages(matchesCount);
 
-        for (MatchEntity match : matches) {
-            FinishedMatchesDto finishedMatchesDto = new FinishedMatchesDto(
-                    match.getPlayer1().getName(),
-                    match.getPlayer2().getName(),
-                    match.getWinner().getName()
-            );
+        int page = PaginationHelper.getPage(pageParameterValue, totalPages);
 
-            finishedMatchesDtos.add(finishedMatchesDto);
-        }
+        int offset = PaginationHelper.getOffset(page);
 
-        return finishedMatchesDtos;
+        List<MatchEntity> matches = matchRepository.findMatches(offset, PaginationHelper.DEFAULT_PAGE_LIMIT_SIZE);
+        List<FinishedMatchesDto> matchesDtos = toDtos(matches);
+
+        Map<String, Integer> pagesWindow = PaginationHelper.getPagesWindow(page, totalPages);
+
+        return new FinishedMatchesPageDto(
+                matchesDtos,
+                page,
+                totalPages,
+                pagesWindow.get("start"),
+                pagesWindow.get("end")
+        );
     }
 
     @Override
@@ -54,5 +61,21 @@ public class FinishedMatchesPersistenceServiceImpl implements FinishedMatchesPer
                 .build();
 
         matchRepository.save(matchEntity);
+    }
+
+    private List<FinishedMatchesDto> toDtos(List<MatchEntity> matches) {
+        List<FinishedMatchesDto> finishedMatchesDtos = new ArrayList<>();
+
+        for (MatchEntity match : matches) {
+            FinishedMatchesDto finishedMatchesDto = new FinishedMatchesDto(
+                    match.getPlayer1().getName(),
+                    match.getPlayer2().getName(),
+                    match.getWinner().getName()
+            );
+
+            finishedMatchesDtos.add(finishedMatchesDto);
+        }
+
+        return finishedMatchesDtos;
     }
 }
