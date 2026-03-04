@@ -17,6 +17,10 @@ public class Match {
     private boolean isFinished;
 
     public Match(Player firstPlayer, Player secondPlayer) {
+        if (Objects.equals(firstPlayer.getId(), secondPlayer.getId())) {
+            throw new IllegalArgumentException("firstPlayer and secondPlayer must be different");
+        }
+
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
         this.score = new Score();
