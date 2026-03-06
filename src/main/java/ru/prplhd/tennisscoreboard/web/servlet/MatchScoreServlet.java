@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ru.prplhd.tennisscoreboard.dto.match.ongoing.MatchDto;
+import ru.prplhd.tennisscoreboard.exception.NotFoundException;
 import ru.prplhd.tennisscoreboard.service.FinishedMatchesPersistenceService;
 import ru.prplhd.tennisscoreboard.service.OngoingMatchService;
 import ru.prplhd.tennisscoreboard.web.ServletContextKeys;
@@ -42,18 +43,25 @@ public class MatchScoreServlet extends HttpServlet {
         UUID matchUUID = UUID.fromString(req.getParameter("uuid"));
         Integer scorerId = Integer.valueOf(req.getParameter("scorerId"));
 
-        MatchDto matchDto = ongoingMatchService.applyPoint(matchUUID, scorerId);
+        try {
+            MatchDto matchDto = ongoingMatchService.applyPoint(matchUUID, scorerId);
 
-        if (matchDto.winner() == null) {
-            resp.sendRedirect("/match-score?uuid=" + matchUUID, HttpServletResponse.SC_SEE_OTHER);
+            if (matchDto.winner() == null) {
+                resp.sendRedirect("/match-score?uuid=" + matchUUID, HttpServletResponse.SC_SEE_OTHER);
 
-        } else {
-            ongoingMatchService.deleteMatch(matchUUID);
-            finishedMatchesPersistenceService.saveMatch(matchDto);
+            } else {
+                ongoingMatchService.deleteMatch(matchUUID);
+                finishedMatchesPersistenceService.saveMatch(matchDto);
 
-            req.setAttribute("matchDto", matchDto);
-            req.setAttribute("matchUUID", matchUUID);
-            req.getRequestDispatcher("/WEB-INF/jsp/match-score.jsp").forward(req, resp);
+                req.setAttribute("matchDto", matchDto);
+                req.setAttribute("matchUUID", matchUUID);
+                req.getRequestDispatcher("/WEB-INF/jsp/match-score.jsp").forward(req, resp);
+            }
+
+        } catch (NotFoundException e) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            req.setAttribute("message", e.getMessage());
+            req.getRequestDispatcher("/WEB-INF/jsp/404.jsp").forward(req, resp);
         }
     }
 }

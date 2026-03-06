@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,8 +33,14 @@
 <main>
     <div class="container">
         <div class="error-image"></div>
-
-        <h1>Unfortunately, this page does not exist</h1>
+        <c:choose>
+            <c:when test="${requestScope.message == null}">
+                <h1>Unfortunately, this page does not exist</h1>
+            </c:when>
+            <c:otherwise>
+                <h1>${requestScope.message}</h1>
+            </c:otherwise>
+        </c:choose>
     </div>
 </main>
 </body>

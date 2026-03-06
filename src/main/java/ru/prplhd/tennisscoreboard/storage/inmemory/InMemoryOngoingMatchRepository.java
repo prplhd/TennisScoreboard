@@ -1,6 +1,7 @@
 package ru.prplhd.tennisscoreboard.storage.inmemory;
 
 import ru.prplhd.tennisscoreboard.domain.Match;
+import ru.prplhd.tennisscoreboard.exception.NotFoundException;
 import ru.prplhd.tennisscoreboard.repository.OngoingMatchRepository;
 
 import java.util.Map;
@@ -34,7 +35,7 @@ public class InMemoryOngoingMatchRepository implements OngoingMatchRepository {
         }));
 
         if (updatedMatch == null) {
-            throw new RuntimeException();
+            throw new NotFoundException("This match has finished or does not exist");
         }
 
         return updatedMatch;

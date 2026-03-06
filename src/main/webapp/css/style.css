@@ -529,6 +529,32 @@ a.btn-filter {
     }
 
     .table td { padding: 12px 6px; }
+
+    .input-container form {
+        flex-direction: column;
+        align-items: stretch;   /* ключевой фикс */
+        gap: 12px;
+    }
+
+    .input-filter {
+        width: 100%;
+    }
+
+    .filter-actions {
+        display: flex;
+        width: 100%;            /* чтобы ряд кнопок был во всю ширину */
+        gap: 12px;
+    }
+
+    .filter-actions .btn-filter,
+    .filter-actions a.btn-filter {
+        flex: 1 1 0;
+        width: auto;            /* перебить width: 280px */
+        min-width: 0;           /* чтобы flex мог сжимать без вылезаний */
+        white-space: nowrap;    /* чтобы "Filter by name" не переносилось */
+        padding: 0 12px;        /* чуть компактнее по горизонтали */
+        font-size: 16px;
+    }
 }
 
 /* Finished matches */

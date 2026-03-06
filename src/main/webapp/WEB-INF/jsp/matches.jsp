@@ -41,10 +41,11 @@
                        name="name"
                        value="${param.name}"
                        placeholder="Enter a name" />
+                <div class="filter-actions">
+                    <button class="btn-filter" type="submit">Filter by name</button>
 
-                <button class="btn-filter" type="submit">Filter by name</button>
-
-                <a class="btn-filter" href="${pageContext.request.contextPath}/matches">Reset filter</a>
+                    <a class="btn-filter" href="${pageContext.request.contextPath}/matches">Reset filter</a>
+                </div>
             </form>
         </div>
 

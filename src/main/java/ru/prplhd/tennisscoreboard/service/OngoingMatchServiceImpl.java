@@ -5,11 +5,13 @@ import ru.prplhd.tennisscoreboard.domain.Match;
 import ru.prplhd.tennisscoreboard.domain.Player;
 import ru.prplhd.tennisscoreboard.dto.match.ongoing.MatchDto;
 import ru.prplhd.tennisscoreboard.dto.NewMatchRequestDto;
+import ru.prplhd.tennisscoreboard.exception.ValidationException;
 import ru.prplhd.tennisscoreboard.repository.OngoingMatchRepository;
 import ru.prplhd.tennisscoreboard.repository.PlayerRepository;
 import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.PlayerEntity;
 import ru.prplhd.tennisscoreboard.util.Validator;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -25,6 +27,10 @@ public class OngoingMatchServiceImpl implements OngoingMatchService{
 
         String secondPlayerName = newMatchRequestDto.secondPlayerName();
         Validator.validatePlayerName(secondPlayerName);
+
+        if (Objects.equals(firstPlayerName, secondPlayerName)) {
+            throw new ValidationException("Player names must be different");
+        }
 
         Player firstPlayer = getOrCreateByName(firstPlayerName);
         Player secondPlayer = getOrCreateByName(secondPlayerName);
