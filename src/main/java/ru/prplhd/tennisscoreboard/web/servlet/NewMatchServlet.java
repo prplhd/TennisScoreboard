@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ru.prplhd.tennisscoreboard.dto.NewMatchRequestDto;
+import ru.prplhd.tennisscoreboard.exception.ValidationException;
 import ru.prplhd.tennisscoreboard.service.OngoingMatchService;
 import ru.prplhd.tennisscoreboard.web.ServletContextKeys;
 
@@ -34,10 +35,26 @@ public class NewMatchServlet extends HttpServlet {
         String firstPlayerName = req.getParameter("firstPlayerName");
         String secondPlayerName = req.getParameter("secondPlayerName");
 
+        if (firstPlayerName == null  || firstPlayerName.isBlank() || secondPlayerName == null || secondPlayerName.isBlank()) {
+            req.setAttribute("errorMessage", "Player name must not be empty");
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            req.getRequestDispatcher("/WEB-INF/jsp/new-match.jsp").forward(req, resp);
+            return;
+        }
+
+        firstPlayerName = firstPlayerName.trim();
+        secondPlayerName = secondPlayerName.trim();
+
         NewMatchRequestDto newMatchRequestDto = new NewMatchRequestDto(firstPlayerName, secondPlayerName);
 
-        UUID matchUUID = ongoingMatchService.createNewMatch(newMatchRequestDto);
+        try {
+            UUID matchUUID = ongoingMatchService.createNewMatch(newMatchRequestDto);
+            resp.sendRedirect("/match-score?uuid=" + matchUUID, HttpServletResponse.SC_SEE_OTHER);
 
-        resp.sendRedirect("/match-score?uuid=" + matchUUID, HttpServletResponse.SC_SEE_OTHER);
+        } catch (ValidationException e) {
+            req.setAttribute("errorMessage", e.getMessage());
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            req.getRequestDispatcher("/WEB-INF/jsp/new-match.jsp").forward(req, resp);
+        }
     }
 }

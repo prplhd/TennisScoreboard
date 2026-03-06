@@ -8,6 +8,7 @@ import ru.prplhd.tennisscoreboard.dto.NewMatchRequestDto;
 import ru.prplhd.tennisscoreboard.repository.OngoingMatchRepository;
 import ru.prplhd.tennisscoreboard.repository.PlayerRepository;
 import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.PlayerEntity;
+import ru.prplhd.tennisscoreboard.util.Validator;
 
 import java.util.UUID;
 
@@ -20,7 +21,10 @@ public class OngoingMatchServiceImpl implements OngoingMatchService{
     @Override
     public UUID createNewMatch(NewMatchRequestDto newMatchRequestDto) {
         String firstPlayerName = newMatchRequestDto.firstPlayerName();
+        Validator.validatePlayerName(firstPlayerName);
+
         String secondPlayerName = newMatchRequestDto.secondPlayerName();
+        Validator.validatePlayerName(secondPlayerName);
 
         Player firstPlayer = getOrCreateByName(firstPlayerName);
         Player secondPlayer = getOrCreateByName(secondPlayerName);

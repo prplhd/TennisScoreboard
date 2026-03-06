@@ -40,9 +40,9 @@
                        type="text"
                        name="name"
                        value="${param.name}"
-                       placeholder="Filter by name" />
+                       placeholder="Enter a name" />
 
-                <button class="btn-filter" type="submit">Filter</button>
+                <button class="btn-filter" type="submit">Filter by name</button>
 
                 <a class="btn-filter" href="${pageContext.request.contextPath}/matches">Reset filter</a>
             </form>

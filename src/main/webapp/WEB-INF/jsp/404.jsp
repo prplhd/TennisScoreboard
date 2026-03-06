@@ -1,11 +1,10 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tennis Scoreboard | New Match</title>
+    <title>Tennis Scoreboard | Home</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -32,22 +31,9 @@
 </header>
 <main>
     <div class="container">
-        <div>
-            <h1>Start new match</h1>
-            <div class="new-match-image"></div>
-            <div class="form-container center">
-                <form method="post" action="${pageContext.request.contextPath}/new-match">
-                    <c:if test="${requestScope.errorMessage != null}">
-                        <p style="color: red; font-size: inherit">${requestScope.errorMessage}</p>
-                    </c:if>
-                    <label class="label-player" for="playerOne">Player one</label>
-                    <input class="input-player" name="firstPlayerName" placeholder="Enter a name" value="${param.firstPlayerName}" type="text" required title="Enter a name">
-                    <label class="label-player" for="playerTwo">Player two</label>
-                    <input class="input-player" name="secondPlayerName" placeholder="Enter a name" value="${param.secondPlayerName}" type="text" required title="Enter a name">
-                    <input class="form-button" type="submit" value="Start">
-                </form>
-            </div>
-        </div>
+        <div class="error-image"></div>
+
+        <h1>Unfortunately, this page does not exist</h1>
     </div>
 </main>
 </body>

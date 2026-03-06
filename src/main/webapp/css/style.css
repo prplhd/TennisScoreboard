@@ -155,6 +155,17 @@ header { height: 50px; }
     box-shadow: var(--shadow);
 }
 
+.error-image {
+    border-radius: 30px;
+    margin-top: 20px;
+    background-image: url('../images/broken.png');
+    background-position: center;
+    min-height: 50vh;
+    background-size: cover;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
 /* Main page buttons: BOTH BLUE */
 .view-results,
 .start-match {
@@ -213,6 +224,7 @@ header { height: 50px; }
     background: var(--surface-2);
     border: 1px solid var(--border);
     color: var(--text);
+    box-sizing: border-box;
 }
 
 .input-player::placeholder {
@@ -231,6 +243,8 @@ header { height: 50px; }
     color: var(--accent-text);
     font-size: 24px;
     cursor: pointer;
+
+    box-sizing: border-box;
 }
 
 .form-button:hover {
@@ -389,9 +403,65 @@ a.btn-filter {
         margin-left: auto;
         color: var(--text);
     }
+
+    .score {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .player1, .player2 {
+        font-size: 18px;
+    }
+
+    .player1 td, .player2 td {
+        padding: 14px 6px;
+        width: auto;
+        font-size: 18px;
+    }
+
+    .player1 td:first-child,
+    .player2 td:first-child {
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .score-btn {
+        margin-right: 0;
+        padding: 10px 14px;
+        font-size: 16px;
+    }
+
+    .table th {
+        font-size: 14px;
+        padding: 6px;
+    }
+
+    .table td:last-child,
+    .table th:last-child {
+        width: 92px;
+    }
+
+    .table .score-btn {
+        margin-right: 0 !important;
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+
+        padding: 10px 0;
+        font-size: 16px;
+    }
+
+    .table td { padding: 12px 6px; }
 }
 
 @media (max-width: 576px) {
+    .current-match-image { background-position: 63% center; }
     .form-container { width: 100%; }
     .nav-link { font-size: 16px; }
     body h1 { font-size: 28px; }
@@ -404,6 +474,61 @@ a.btn-filter {
         padding: 10px 15px;
         box-sizing: border-box;
     }
+
+    .score {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .player1, .player2 {
+        font-size: 18px;
+    }
+
+    .player1 td, .player2 td {
+        padding: 14px 6px;
+        width: auto;
+        font-size: 18px;
+    }
+
+    .player1 td:first-child,
+    .player2 td:first-child {
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .score-btn {
+        margin-right: 0;
+        padding: 10px 14px;
+        font-size: 16px;
+    }
+
+    .table th {
+        font-size: 14px;
+        padding: 6px;
+    }
+
+    .table td:last-child,
+    .table th:last-child {
+        width: 92px;
+    }
+
+    .table .score-btn {
+        margin-right: 0 !important;
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+
+        padding: 10px 0;
+        font-size: 16px;
+    }
+
+    .table td { padding: 12px 6px; }
 }
 
 /* Finished matches */

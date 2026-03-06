@@ -15,4 +15,13 @@
         <url-pattern>/h2-console/*</url-pattern>
     </servlet-mapping>
 
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/jsp/404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/jsp/500.jsp</location>
+    </error-page>
+
 </web-app>
