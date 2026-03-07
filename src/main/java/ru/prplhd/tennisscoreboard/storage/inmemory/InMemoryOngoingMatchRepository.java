@@ -14,7 +14,13 @@ public class InMemoryOngoingMatchRepository implements OngoingMatchRepository {
 
     @Override
     public Match findById(UUID uuid) {
-        return ongoingMatches.get(uuid);
+        Match match = ongoingMatches.get(uuid);
+
+        if (match == null) {
+            throw new NotFoundException("This match has finished or does not exist");
+        }
+
+        return match;
     }
 
     @Override

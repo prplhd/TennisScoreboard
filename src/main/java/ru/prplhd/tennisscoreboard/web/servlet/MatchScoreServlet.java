@@ -30,12 +30,20 @@ public class MatchScoreServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UUID matchUUID = UUID.fromString(req.getParameter("uuid"));
-        MatchDto matchDto = ongoingMatchService.getMatchScoreboard(matchUUID);
+        try {
+            UUID matchUUID = UUID.fromString(req.getParameter("uuid"));
+            MatchDto matchDto = ongoingMatchService.getMatchScoreboard(matchUUID);
 
-        req.setAttribute("matchDto", matchDto);
-        req.setAttribute("matchUUID", matchUUID);
-        req.getRequestDispatcher("/WEB-INF/jsp/match-score.jsp").forward(req, resp);
+            req.setAttribute("matchDto", matchDto);
+            req.setAttribute("matchUUID", matchUUID);
+            req.getRequestDispatcher("/WEB-INF/jsp/match-score.jsp").forward(req, resp);
+
+        } catch (NotFoundException | IllegalArgumentException e) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            req.setAttribute("message", "This match has finished or does not exist");
+            req.getRequestDispatcher("/WEB-INF/jsp/404.jsp").forward(req, resp);
+        }
+
     }
 
     @Override
