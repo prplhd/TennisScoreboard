@@ -10,6 +10,12 @@ import org.hibernate.cfg.Configuration;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class HibernateSessionFactoryProvider {
 
+    private static final String ENV_DB_USER = "DB_USER";
+    private static final String ENV_DB_PASSWORD = "DB_PASSWORD";
+
+    private static final String PROP_HIKARI_USER = "hibernate.hikari.username";
+    private static final String PROP_HIKARI_PASSWORD = "hibernate.hikari.password";
+
     public static Configuration createConfiguration(Class<?>... entities) {
         if (entities == null || entities.length == 0) {
             throw new IllegalArgumentException("At least one entity class is required");
@@ -24,6 +30,20 @@ public class HibernateSessionFactoryProvider {
             configuration.addAnnotatedClass(entity);
         }
         configuration.configure();
+
+        String dbUser = System.getenv(ENV_DB_USER);
+        String dbPassword = System.getenv(ENV_DB_PASSWORD);
+
+        if (dbUser != null) {
+            configuration.setProperty(PROP_HIKARI_USER, dbUser);
+            log.info("DB override applied: {} from env {}", PROP_HIKARI_USER, ENV_DB_USER);
+        }
+
+        if (dbPassword != null) {
+            configuration.setProperty(PROP_HIKARI_PASSWORD, dbPassword);
+            log.info("DB override applied: {} from env {}", PROP_HIKARI_PASSWORD, ENV_DB_PASSWORD);
+
+        }
 
         return configuration;
     }
