@@ -4,14 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import ru.prplhd.tennisscoreboard.repository.Repository;
-import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.BaseEntity;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public abstract class BaseRepository<ID extends Serializable, E extends BaseEntity<ID>> implements Repository<ID, E> {
+public abstract class BaseRepository<ID extends Serializable, E> implements Repository<ID, E> {
 
     protected final Class<E> clazz;
     protected final SessionFactory sessionFactory;

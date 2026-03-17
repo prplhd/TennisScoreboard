@@ -23,7 +23,7 @@ import lombok.ToString;
 @Builder
 @Table(name = "players")
 @Entity
-public class PlayerEntity implements BaseEntity<Integer> {
+public class PlayerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

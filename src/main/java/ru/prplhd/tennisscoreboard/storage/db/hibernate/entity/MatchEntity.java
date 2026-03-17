@@ -25,7 +25,7 @@ import lombok.ToString;
 @Builder
 @Table(name = "matches")
 @Entity
-public class MatchEntity implements BaseEntity<Integer> {
+public class MatchEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
