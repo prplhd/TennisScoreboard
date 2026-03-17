@@ -62,12 +62,7 @@ public class OngoingMatchServiceImpl implements OngoingMatchService{
 
     private Player getOrCreateByName(String name) {
         PlayerEntity playerEntity = playerRepository.findPlayerByName(name)
-                .orElseGet(() -> playerRepository.save(
-                        PlayerEntity.builder()
-                                    .name(name)
-                                    .build()
-                        )
-                );
+                .orElseGet(() -> playerRepository.save(new PlayerEntity(name)));
 
         return new Player(playerEntity.getId(), playerEntity.getName());
     }
