@@ -77,11 +77,7 @@ public class FinishedMatchesPersistenceServiceImpl implements FinishedMatchesPer
         Integer winnerId = matchDto.winner().getId();
         PlayerEntity winner = Objects.equals(winnerId, firstPlayer.getId()) ? firstPlayer : secondPlayer;
 
-        MatchEntity matchEntity = MatchEntity.builder()
-                .player1(firstPlayer)
-                .player2(secondPlayer)
-                .winner(winner)
-                .build();
+        MatchEntity matchEntity = new MatchEntity(firstPlayer, secondPlayer, winner);
 
         matchRepository.save(matchEntity);
     }
