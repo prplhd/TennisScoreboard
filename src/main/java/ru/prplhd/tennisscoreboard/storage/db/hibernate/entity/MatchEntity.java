@@ -35,10 +35,10 @@ public class MatchEntity {
     private PlayerEntity player1;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "player2")
+    @JoinColumn(name = "player2", updatable = false)
     private PlayerEntity player2;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "winner")
+    @JoinColumn(name = "winner", updatable = false)
     private PlayerEntity winner;
 }
