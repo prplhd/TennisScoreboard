@@ -16,7 +16,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString(of = "id")
-@Table(name = "matches")
+@Table(name = "finished_matches")
 @Entity
 public class MatchEntity {
 
