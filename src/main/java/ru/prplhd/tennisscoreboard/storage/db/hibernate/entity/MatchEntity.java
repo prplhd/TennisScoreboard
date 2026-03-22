@@ -31,7 +31,7 @@ public class MatchEntity {
     private Integer id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "firstPlayer")
+    @JoinColumn(name = "firstPlayer", updatable = false)
     private PlayerEntity firstPlayer;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
