@@ -87,8 +87,8 @@ public class FinishedMatchesPersistenceServiceImpl implements FinishedMatchesPer
 
         for (MatchEntity match : matches) {
             FinishedMatchesDto finishedMatchesDto = new FinishedMatchesDto(
-                    match.getPlayer1().getName(),
-                    match.getPlayer2().getName(),
+                    match.getFirstPlayer().getName(),
+                    match.getSecondPlayer().getName(),
                     match.getWinner().getName()
             );
 

@@ -21,8 +21,8 @@ import lombok.ToString;
 public class MatchEntity {
 
     public MatchEntity (PlayerEntity firstPlayer, PlayerEntity secondPlayer, PlayerEntity winner) {
-        this.player1 = firstPlayer;
-        this.player2 = secondPlayer;
+        this.firstPlayer = firstPlayer;
+        this.secondPlayer = secondPlayer;
         this.winner = winner;
     }
 
@@ -31,12 +31,12 @@ public class MatchEntity {
     private Integer id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "player1")
-    private PlayerEntity player1;
+    @JoinColumn(name = "firstPlayer")
+    private PlayerEntity firstPlayer;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "player2", updatable = false)
-    private PlayerEntity player2;
+    @JoinColumn(name = "secondPlayer", updatable = false)
+    private PlayerEntity secondPlayer;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "winner", updatable = false)
