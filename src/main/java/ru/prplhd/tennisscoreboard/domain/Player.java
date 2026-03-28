@@ -7,7 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Player {
 
-    private final Integer id;
-
     private final String name;
 }
