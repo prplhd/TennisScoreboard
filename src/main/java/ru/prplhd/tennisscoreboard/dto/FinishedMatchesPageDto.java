@@ -1,11 +1,11 @@
 package ru.prplhd.tennisscoreboard.dto;
 
-import ru.prplhd.tennisscoreboard.dto.match.finished.FinishedMatchesDto;
+import ru.prplhd.tennisscoreboard.dto.match.FinishedMatchDto;
 
 import java.util.List;
 
 public record FinishedMatchesPageDto(
-        List<FinishedMatchesDto> matchesDtos,
+        List<FinishedMatchDto> matchesDtos,
         int page,
         int totalPages,
         int start,

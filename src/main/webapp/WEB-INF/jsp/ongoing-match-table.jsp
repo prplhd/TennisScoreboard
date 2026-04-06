@@ -10,24 +10,24 @@
     </thead>
     <tbody>
     <tr class="player1">
-        <td class="table-text">${requestScope.matchDto.firstPlayer.name}</td>
-        <td class="table-text">${requestScope.matchDto.scoreDto.firstPlayerSets}</td>
-        <td class="table-text">${requestScope.matchDto.scoreDto.firstPlayerGames}</td>
-        <td class="table-text">${requestScope.matchDto.scoreDto.firstPlayerPoints}</td>
+        <td class="table-text">${requestScope.matchScoreboardDto.firstPlayer}</td>
+        <td class="table-text">${requestScope.matchScoreboardDto.firstPlayerSets}</td>
+        <td class="table-text">${requestScope.matchScoreboardDto.firstPlayerGames}</td>
+        <td class="table-text">${requestScope.matchScoreboardDto.firstPlayerPoints}</td>
         <td class="table-text">
             <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${requestScope.matchUUID}">
-                <button class="score-btn" name="scorerId" value="${requestScope.matchDto.firstPlayer.id}">Score</button>
+                <button class="score-btn" name="scorerId" value="${requestScope.matchPlayerIdsDto.firstPlayerId}">Score</button>
             </form>
         </td>
     </tr>
     <tr class="player2">
-        <td class="table-text">${requestScope.matchDto.secondPlayer.name}</td>
-        <td class="table-text">${requestScope.matchDto.scoreDto.secondPlayerSets}</td>
-        <td class="table-text">${requestScope.matchDto.scoreDto.secondPlayerGames}</td>
-        <td class="table-text">${requestScope.matchDto.scoreDto.secondPlayerPoints}</td>
+        <td class="table-text">${requestScope.matchScoreboardDto.secondPlayer}</td>
+        <td class="table-text">${requestScope.matchScoreboardDto.secondPlayerSets}</td>
+        <td class="table-text">${requestScope.matchScoreboardDto.secondPlayerGames}</td>
+        <td class="table-text">${requestScope.matchScoreboardDto.secondPlayerPoints}</td>
         <td class="table-text">
             <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${requestScope.matchUUID}">
-                <button class="score-btn" name="scorerId" value="${requestScope.matchDto.secondPlayer.id}">Score</button>
+                <button class="score-btn" name="scorerId" value="${requestScope.matchPlayerIdsDto.secondPlayerId}">Score</button>
             </form>
         </td>
     </tr>

@@ -1,9 +1,9 @@
 package ru.prplhd.tennisscoreboard.service;
 
 import lombok.RequiredArgsConstructor;
-import ru.prplhd.tennisscoreboard.dto.match.finished.FinishedMatchesDto;
+import ru.prplhd.tennisscoreboard.dto.match.FinishedMatchDto;
 import ru.prplhd.tennisscoreboard.dto.FinishedMatchesPageDto;
-import ru.prplhd.tennisscoreboard.dto.match.ongoing.MatchDto;
+import ru.prplhd.tennisscoreboard.dto.match.MatchScoreboardDto;
 import ru.prplhd.tennisscoreboard.repository.MatchRepository;
 import ru.prplhd.tennisscoreboard.repository.PlayerRepository;
 import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.MatchEntity;
@@ -30,7 +30,7 @@ public class FinishedMatchesPersistenceServiceImpl implements FinishedMatchesPer
         int offset = PaginationHelper.getOffset(page);
 
         List<MatchEntity> matches = matchRepository.findMatches(offset, PaginationHelper.DEFAULT_PAGE_LIMIT_SIZE);
-        List<FinishedMatchesDto> matchesDtos = toDtos(matches);
+        List<FinishedMatchDto> matchesDtos = toDtos(matches);
 
         Map<String, Integer> pagesWindow = PaginationHelper.getPagesWindow(page, totalPages);
 
@@ -53,7 +53,7 @@ public class FinishedMatchesPersistenceServiceImpl implements FinishedMatchesPer
         int offset = PaginationHelper.getOffset(page);
 
         List<MatchEntity> matches = matchRepository.findMatchesByName(offset, PaginationHelper.DEFAULT_PAGE_LIMIT_SIZE, name);
-        List<FinishedMatchesDto> matchesDtos = toDtos(matches);
+        List<FinishedMatchDto> matchesDtos = toDtos(matches);
 
         Map<String, Integer> pagesWindow = PaginationHelper.getPagesWindow(page, totalPages);
 
@@ -67,26 +67,26 @@ public class FinishedMatchesPersistenceServiceImpl implements FinishedMatchesPer
     }
 
     @Override
-    public void saveMatch(MatchDto matchDto) {
-        PlayerEntity firstPlayer = playerRepository.findPlayerByName(matchDto.firstPlayer().getName())
+    public void saveMatch(MatchScoreboardDto matchScoreboardDto) {
+        PlayerEntity firstPlayer = playerRepository.findPlayerByName(matchScoreboardDto.firstPlayer())
                 .orElseThrow(RuntimeException::new);
 
-        PlayerEntity secondPlayer = playerRepository.findPlayerByName(matchDto.secondPlayer().getName())
+        PlayerEntity secondPlayer = playerRepository.findPlayerByName(matchScoreboardDto.secondPlayer())
                 .orElseThrow(RuntimeException::new);
 
-        Integer winnerId = matchDto.winner().getId();
-        PlayerEntity winner = Objects.equals(winnerId, firstPlayer.getId()) ? firstPlayer : secondPlayer;
+        String winnerName = matchScoreboardDto.winner();
+        PlayerEntity winner = Objects.equals(winnerName, firstPlayer.getName()) ? firstPlayer : secondPlayer;
 
         MatchEntity matchEntity = new MatchEntity(firstPlayer, secondPlayer, winner);
 
         matchRepository.save(matchEntity);
     }
 
-    private List<FinishedMatchesDto> toDtos(List<MatchEntity> matches) {
-        List<FinishedMatchesDto> finishedMatchesDtos = new ArrayList<>();
+    private List<FinishedMatchDto> toDtos(List<MatchEntity> matches) {
+        List<FinishedMatchDto> finishedMatchesDtos = new ArrayList<>();
 
         for (MatchEntity match : matches) {
-            FinishedMatchesDto finishedMatchesDto = new FinishedMatchesDto(
+            FinishedMatchDto finishedMatchesDto = new FinishedMatchDto(
                     match.getFirstPlayer().getName(),
                     match.getSecondPlayer().getName(),
                     match.getWinner().getName()

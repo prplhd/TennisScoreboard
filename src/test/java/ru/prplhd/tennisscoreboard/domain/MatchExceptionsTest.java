@@ -2,55 +2,56 @@ package ru.prplhd.tennisscoreboard.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.prplhd.tennisscoreboard.exception.AlreadyFinishedException;
+import ru.prplhd.tennisscoreboard.exception.NotFoundException;
+import ru.prplhd.tennisscoreboard.exception.SamePlayerException;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MatchExceptionsTest {
 
-    Integer firstPlayerId;
-    Integer secondPlayerId;
+    Player firstPlayer;
+    Player secondPlayer;
     Match match;
     MatchSteps matchSteps;
 
     @BeforeEach
     void prepareMatch() {
-        Player firstPlayer = new Player(1, "Alice");
-        firstPlayerId = firstPlayer.getId();
-
-        Player secondPlayer = new Player(2, "Clementine");
-        secondPlayerId = secondPlayer.getId();
+        firstPlayer = new Player("Alice");
+        secondPlayer = new Player("Clementine");
 
         match = new Match(firstPlayer, secondPlayer);
         matchSteps = new MatchSteps(match);
     }
 
     @Test
-    void givenFinishedMatch_whenPointIsAdded_thenThrowsIllegalStateException() {
-        matchSteps.setsWonBy(firstPlayerId, 2);
-
-        int firstPlayerSets = match.getScoreboard().scoreDto().firstPlayerSets();
-        Player winner = match.getScoreboard().winner();
+    void givenFinishedMatch_whenPointIsAdded_thenThrowsAlreadyFinishedException() {
+        matchSteps.setsWonBy(firstPlayer, 2);
+        int firstPlayerSets = match.getSnapshot().firstPlayerSets();
+        Optional<Player> winner = match.getWinner();
 
         assertEquals(2, firstPlayerSets);
-        assertNotNull(winner);
-        assertEquals(winner.getId(), firstPlayerId);
+        assertTrue(winner.isPresent());
+        assertEquals(winner.get(), firstPlayer);
 
-        assertThrows(IllegalStateException.class, () -> matchSteps.pointsWonBy(firstPlayerId, 1));
+        assertThrows(AlreadyFinishedException.class, () -> matchSteps.pointsWonBy(firstPlayer, 1));
     }
 
     @Test
-    void givenUnknownPlayerId_whenPointIsAdded_thenThrowsIllegalArgumentException() {
-        Integer unknownId = 228;
+    void givenUnknownPlayer_whenPointIsAdded_thenThrowsNotFoundException() {
+        Player unknownPlayer = new Player("Eva");
 
-        assertThrows(IllegalArgumentException.class, () -> matchSteps.pointsWonBy(unknownId, 1));
+        assertThrows(NotFoundException.class, () -> matchSteps.pointsWonBy(unknownPlayer, 1));
     }
 
     @Test
-    void givenSamePlayers_whenMatchCreated_thenThrowsIllegalArgumentException() {
-        Player samePlayer = new Player(3, "Melody");
+    void givenSamePlayers_whenMatchCreated_thenThrowsSamePlayerException() {
+        Player samePlayer = new Player("Melody");
 
-        assertThrows(IllegalArgumentException.class, () -> new Match(samePlayer, samePlayer));
+        assertThrows(SamePlayerException.class, () -> new Match(samePlayer, samePlayer));
     }
 }

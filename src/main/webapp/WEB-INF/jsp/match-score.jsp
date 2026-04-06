@@ -39,7 +39,7 @@
         <div class="current-match-image"></div>
         <section class="score">
             <c:choose>
-                <c:when test="${requestScope.matchDto.winner == null}">
+                <c:when test="${requestScope.matchScoreboardDto.winner == null}">
                     <%@ include file="ongoing-match-table.jsp"%>
                 </c:when>
                 <c:otherwise>

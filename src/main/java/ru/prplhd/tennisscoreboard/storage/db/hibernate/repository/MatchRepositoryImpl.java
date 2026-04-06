@@ -15,8 +15,8 @@ public class MatchRepositoryImpl extends BaseRepository<Integer, MatchEntity> im
 
     private static final String FIND_ALL_MATCHES = """
             SELECT m FROM MatchEntity m
-            JOIN FETCH m.player1
-            JOIN FETCH m.player2
+            JOIN FETCH m.firstPlayer
+            JOIN FETCH m.secondPlayer
             """;
 
     private static final String COUNT_ALL_MATCHES_HQL = """
@@ -24,7 +24,7 @@ public class MatchRepositoryImpl extends BaseRepository<Integer, MatchEntity> im
             """;
 
     private static final String FILTER_BY_NAME_HQL = """
-            WHERE (lower(m.player1.name) = :name OR lower(m.player2.name) = :name)
+            WHERE (lower(m.firstPlayer.name) = :name OR lower(m.secondPlayer.name) = :name)
             """;
 
     private static final String DESC_ORDER_BY_ID = """

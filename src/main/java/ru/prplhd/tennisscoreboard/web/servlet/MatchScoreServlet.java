@@ -6,8 +6,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ru.prplhd.tennisscoreboard.dto.match.ongoing.MatchDto;
+import ru.prplhd.tennisscoreboard.domain.snapshot.MatchSnapshot;
+import ru.prplhd.tennisscoreboard.dto.match.MatchPlayerIdsDto;
+import ru.prplhd.tennisscoreboard.dto.match.MatchScoreboardDto;
 import ru.prplhd.tennisscoreboard.exception.NotFoundException;
+import ru.prplhd.tennisscoreboard.mapper.MatchScoreboardMapper;
 import ru.prplhd.tennisscoreboard.service.FinishedMatchesPersistenceService;
 import ru.prplhd.tennisscoreboard.service.OngoingMatchService;
 import ru.prplhd.tennisscoreboard.web.ServletContextKeys;
@@ -32,9 +35,13 @@ public class MatchScoreServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             UUID matchUUID = UUID.fromString(req.getParameter("uuid"));
-            MatchDto matchDto = ongoingMatchService.getMatchScoreboard(matchUUID);
+            MatchSnapshot matchSnapshot = ongoingMatchService.getMatchScoreboard(matchUUID);
+            MatchScoreboardDto matchScoreboardDto = MatchScoreboardMapper.toDto(matchSnapshot);
 
-            req.setAttribute("matchDto", matchDto);
+            MatchPlayerIdsDto matchPlayerIdsDto = ongoingMatchService.getPlayerIds(matchScoreboardDto);
+
+            req.setAttribute("matchScoreboardDto", matchScoreboardDto);
+            req.setAttribute("matchPlayerIdsDto", matchPlayerIdsDto);
             req.setAttribute("matchUUID", matchUUID);
             req.getRequestDispatcher("/WEB-INF/jsp/match-score.jsp").forward(req, resp);
 
@@ -52,16 +59,17 @@ public class MatchScoreServlet extends HttpServlet {
         Integer scorerId = Integer.valueOf(req.getParameter("scorerId"));
 
         try {
-            MatchDto matchDto = ongoingMatchService.applyPoint(matchUUID, scorerId);
+            MatchSnapshot matchSnapshot = ongoingMatchService.applyPoint(matchUUID, scorerId);
+            MatchScoreboardDto matchScoreboardDto = MatchScoreboardMapper.toDto(matchSnapshot);
 
-            if (matchDto.winner() == null) {
+            if (matchScoreboardDto.winner() == null) {
                 resp.sendRedirect("/match-score?uuid=" + matchUUID, HttpServletResponse.SC_SEE_OTHER);
 
             } else {
                 ongoingMatchService.deleteMatch(matchUUID);
-                finishedMatchesPersistenceService.saveMatch(matchDto);
+                finishedMatchesPersistenceService.saveMatch(matchScoreboardDto);
 
-                req.setAttribute("matchDto", matchDto);
+                req.setAttribute("matchScoreboardDto", matchScoreboardDto);
                 req.setAttribute("matchUUID", matchUUID);
                 req.getRequestDispatcher("/WEB-INF/jsp/match-score.jsp").forward(req, resp);
             }

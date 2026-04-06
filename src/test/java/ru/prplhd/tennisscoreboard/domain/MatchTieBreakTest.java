@@ -7,19 +7,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MatchTieBreakTest {
 
-    Integer firstPlayerId;
-    Integer secondPlayerId;
+    Player firstPlayer;
+    Player secondPlayer;
     Match match;
     MatchSteps matchSteps;
 
     @BeforeEach
     void prepareMatch() {
-        Player firstPlayer = new Player(1, "Alice");
-        firstPlayerId = firstPlayer.getId();
-
-        Player secondPlayer = new Player(2, "Clementine");
-        secondPlayerId = secondPlayer.getId();
-
+        firstPlayer = new Player("Alice");
+        secondPlayer = new Player("Clementine");
         match = new Match(firstPlayer, secondPlayer);
         matchSteps = new MatchSteps(match);
     }
@@ -28,99 +24,74 @@ class MatchTieBreakTest {
     void givenTieBreak_whenPlayerWinsThreePoints_thenTieBreakPointsIncreaseByOneEachTime() {
         reachTieBreak();
 
-        matchSteps.pointsWonBy(firstPlayerId, 1);
+        matchSteps.pointsWonBy(firstPlayer, 1);
+        assertEquals("1", match.getSnapshot().set().game().firstPlayerPoints());
 
-        String firstPlayerPoints = match.getScoreboard().scoreDto().firstPlayerPoints();
-        assertEquals("1", firstPlayerPoints);
+        matchSteps.pointsWonBy(firstPlayer, 1);
+        assertEquals("2", match.getSnapshot().set().game().firstPlayerPoints());
 
-        matchSteps.pointsWonBy(firstPlayerId, 1);
-
-        firstPlayerPoints = match.getScoreboard().scoreDto().firstPlayerPoints();
-        assertEquals("2", firstPlayerPoints);
-
-        matchSteps.pointsWonBy(firstPlayerId, 1);
-
-        firstPlayerPoints = match.getScoreboard().scoreDto().firstPlayerPoints();
-        assertEquals("3", firstPlayerPoints);
+        matchSteps.pointsWonBy(firstPlayer, 1);
+        assertEquals("3", match.getSnapshot().set().game().firstPlayerPoints());
     }
 
     @Test
     void givenTieBreak_whenPlayerWinsFourTieBreakPoints_thenSetDoesNotEnd() {
         reachTieBreak();
 
-        matchSteps.pointsWonBy(firstPlayerId, 4);
+        matchSteps.pointsWonBy(firstPlayer, 4);
 
-        int firstPlayerSets = match.getScoreboard().scoreDto().firstPlayerSets();
-        assertEquals(0, firstPlayerSets);
+        assertEquals(0, match.getSnapshot().firstPlayerSets());
     }
 
     @Test
     void givenTieBreak_whenPlayerWinsSevenTieBreakPoints_thenSetEnds() {
         reachTieBreak();
 
-        matchSteps.pointsWonBy(firstPlayerId, 7);
+        matchSteps.pointsWonBy(firstPlayer, 7);
 
-        int firstPlayerSets = match.getScoreboard().scoreDto().firstPlayerSets();
-        assertEquals(1, firstPlayerSets);
+        assertEquals(1, match.getSnapshot().firstPlayerSets());
     }
 
     @Test
     void givenTieBreak_whenTieBreakPointsBecomeSixSeven_thenSetDoesNotEnd_andAtSixEight_thenSetEnds() {
         reachTieBreak();
 
-        matchSteps.pointsWonBy(firstPlayerId, 6);
-        matchSteps.pointsWonBy(secondPlayerId, 7);
+        matchSteps.pointsWonBy(firstPlayer, 6);
+        matchSteps.pointsWonBy(secondPlayer, 7);
+        assertEquals(0, match.getSnapshot().secondPlayerSets());
 
-        int secondPlayerSets = match.getScoreboard().scoreDto().secondPlayerSets();
-        assertEquals(0, secondPlayerSets);
-
-        matchSteps.pointsWonBy(secondPlayerId, 1);
-
-        secondPlayerSets = match.getScoreboard().scoreDto().secondPlayerSets();
-        assertEquals(1, secondPlayerSets);
+        matchSteps.pointsWonBy(secondPlayer, 1);
+        assertEquals(1, match.getSnapshot().secondPlayerSets());
     }
 
     @Test
     void givenTieBreak_whenSetEnds_thenGamesAndPointsReset_andNextGameIsRegular() {
         reachTieBreak();
-        matchSteps.pointsWonBy(firstPlayerId, 6);
-        matchSteps.pointsWonBy(secondPlayerId, 3);
+        matchSteps.pointsWonBy(firstPlayer, 6);
+        matchSteps.pointsWonBy(secondPlayer, 3);
 
-        int firstPlayerGames = match.getScoreboard().scoreDto().firstPlayerGames();
-        int secondPlayerGames = match.getScoreboard().scoreDto().secondPlayerGames();
-        String firstPlayerPoints = match.getScoreboard().scoreDto().firstPlayerPoints();
-        String secondPlayerPoints = match.getScoreboard().scoreDto().secondPlayerPoints();
+        assertEquals(6, match.getSnapshot().set().firstPlayerGames());
+        assertEquals(6, match.getSnapshot().set().secondPlayerGames());
+        assertEquals("6", match.getSnapshot().set().game().firstPlayerPoints());
+        assertEquals("3", match.getSnapshot().set().game().secondPlayerPoints());
 
-        assertEquals(6, firstPlayerGames);
-        assertEquals(6, secondPlayerGames);
-        assertEquals("6", firstPlayerPoints);
-        assertEquals("3", secondPlayerPoints);
+        matchSteps.pointsWonBy(firstPlayer, 1);
 
-        matchSteps.pointsWonBy(firstPlayerId, 1);
+        assertEquals(0, match.getSnapshot().set().firstPlayerGames());
+        assertEquals(0, match.getSnapshot().set().secondPlayerGames());
+        assertEquals("0", match.getSnapshot().set().game().firstPlayerPoints());
+        assertEquals("0", match.getSnapshot().set().game().secondPlayerPoints());
 
-        firstPlayerGames = match.getScoreboard().scoreDto().firstPlayerGames();
-        secondPlayerGames = match.getScoreboard().scoreDto().secondPlayerGames();
-        firstPlayerPoints = match.getScoreboard().scoreDto().firstPlayerPoints();
-        secondPlayerPoints = match.getScoreboard().scoreDto().secondPlayerPoints();
+        matchSteps.pointsWonBy(firstPlayer, 2);
+        matchSteps.pointsWonBy(secondPlayer, 1);
 
-        assertEquals(0, firstPlayerGames);
-        assertEquals(0, secondPlayerGames);
-        assertEquals("0", firstPlayerPoints);
-        assertEquals("0", secondPlayerPoints);
-
-        matchSteps.pointsWonBy(firstPlayerId, 2);
-        matchSteps.pointsWonBy(secondPlayerId, 1);
-
-        firstPlayerPoints = match.getScoreboard().scoreDto().firstPlayerPoints();
-        secondPlayerPoints = match.getScoreboard().scoreDto().secondPlayerPoints();
-
-        assertEquals("30", firstPlayerPoints);
-        assertEquals("15", secondPlayerPoints);
+        assertEquals("30", match.getSnapshot().set().game().firstPlayerPoints());
+        assertEquals("15", match.getSnapshot().set().game().secondPlayerPoints());
     }
 
     private void reachTieBreak() {
-        matchSteps.gamesWonBy(firstPlayerId, 5);
-        matchSteps.gamesWonBy(secondPlayerId, 6);
-        matchSteps.gamesWonBy(firstPlayerId, 1);
+        matchSteps.gamesWonBy(firstPlayer, 5);
+        matchSteps.gamesWonBy(secondPlayer, 6);
+        matchSteps.gamesWonBy(firstPlayer, 1);
     }
 }

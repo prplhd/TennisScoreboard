@@ -1,64 +1,55 @@
 package ru.prplhd.tennisscoreboard.domain;
 
-import ru.prplhd.tennisscoreboard.domain.score.Score;
-import ru.prplhd.tennisscoreboard.domain.score.ScoreEffect;
-import ru.prplhd.tennisscoreboard.dto.match.ongoing.MatchDto;
+import ru.prplhd.tennisscoreboard.domain.snapshot.MatchSnapshot;
+import ru.prplhd.tennisscoreboard.exception.AlreadyFinishedException;
 
-import java.util.Objects;
+public class Match extends AbstractTennisLevel {
 
-public class Match {
+    private static final int SETS_TO_WIN_MATCH = 2;
 
-    private final Player firstPlayer;
-    private final Player secondPlayer;
-    private Player winner;
-
-    private final Score score;
-
-    private boolean isFinished;
+    private final PlayerScores<Integer> sets = new PlayerScores<>(firstPlayer, secondPlayer, 0, 0);
+    private TennisSet currentSet;
 
     public Match(Player firstPlayer, Player secondPlayer) {
-        if (Objects.equals(firstPlayer.getId(), secondPlayer.getId())) {
-            throw new IllegalArgumentException("firstPlayer and secondPlayer must be different");
-        }
-
-        this.firstPlayer = firstPlayer;
-        this.secondPlayer = secondPlayer;
-        this.score = new Score();
+        super(firstPlayer, secondPlayer);
+        this.currentSet = new TennisSet(firstPlayer, secondPlayer);
     }
 
-    public ScoreEffect pointWonByPlayerId(Integer id) {
-        if (isFinished) {
-            throw new IllegalStateException("Match already finished");
-        }
-
-        PlayerSide playerSide;
-        Player winnerCandidate;
-
-        if (Objects.equals(firstPlayer.getId(), id)) {
-            playerSide = PlayerSide.FIRST;
-            winnerCandidate = firstPlayer;
-        } else if (Objects.equals(secondPlayer.getId(), id)) {
-            playerSide = PlayerSide.SECOND;
-            winnerCandidate = secondPlayer;
-        } else {
-            throw new IllegalArgumentException("Unknown player id: " + id);
-        }
-
-        ScoreEffect result = score.pointWonBy(playerSide);
-        if (result == ScoreEffect.MATCH_WON) {
-            isFinished = true;
-            winner = winnerCandidate;
-        }
-
-        return result;
-    }
-
-    public MatchDto getScoreboard() {
-        return new MatchDto(
+    public MatchSnapshot getSnapshot() {
+        return new MatchSnapshot(
                 firstPlayer,
                 secondPlayer,
-                score.getScore(isFinished),
-                winner
+                winner,
+                sets.get(firstPlayer),
+                sets.get(secondPlayer),
+                currentSet.getSnapshot()
         );
+    }
+
+    @Override
+    public void pointWonBy(Player scorer) {
+        if (isFinished()) {
+            throw new AlreadyFinishedException("Match already finished");
+        }
+
+        currentSet.pointWonBy(scorer);
+
+        if (currentSet.isFinished()) {
+            handleFinishedSet(scorer);
+            prepareForNextSet();
+        }
+    }
+
+    private void handleFinishedSet(Player scorer) {
+        int scorerSets = sets.get(scorer) + 1;
+        sets.set(scorer, scorerSets);
+
+        if (scorerSets == SETS_TO_WIN_MATCH) {
+            winner = scorer;
+        }
+    }
+
+    private void prepareForNextSet() {
+        currentSet = new TennisSet(firstPlayer, secondPlayer);
     }
 }

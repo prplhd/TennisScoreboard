@@ -1,6 +1,7 @@
 package ru.prplhd.tennisscoreboard.storage.inmemory;
 
 import ru.prplhd.tennisscoreboard.domain.Match;
+import ru.prplhd.tennisscoreboard.domain.Player;
 import ru.prplhd.tennisscoreboard.exception.NotFoundException;
 import ru.prplhd.tennisscoreboard.repository.OngoingMatchRepository;
 
@@ -34,9 +35,9 @@ public class InMemoryOngoingMatchRepository implements OngoingMatchRepository {
     }
 
     @Override
-    public Match applyPoint(UUID uuid, Integer id) {
+    public Match applyPoint(UUID uuid, Player player) {
         Match updatedMatch = ongoingMatches.computeIfPresent(uuid, ((uuid1, match) -> {
-            match.pointWonByPlayerId(id);
+            match.pointWonBy(player);
             return match;
         }));
 
