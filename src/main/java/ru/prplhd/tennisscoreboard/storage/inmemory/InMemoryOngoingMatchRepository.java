@@ -6,6 +6,7 @@ import ru.prplhd.tennisscoreboard.exception.NotFoundException;
 import ru.prplhd.tennisscoreboard.repository.OngoingMatchRepository;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,19 +15,17 @@ public class InMemoryOngoingMatchRepository implements OngoingMatchRepository {
     private final Map<UUID, Match> ongoingMatches = new ConcurrentHashMap<>();
 
     @Override
-    public Match findById(UUID uuid) {
+    public Optional<Match> findById(UUID uuid) {
         Match match = ongoingMatches.get(uuid);
 
-        if (match == null) {
-            throw new NotFoundException("This match has finished or does not exist");
-        }
-
-        return match;
+        return Optional.ofNullable(match);
     }
 
     @Override
-    public Match save(UUID uuid, Match match) {
-        return ongoingMatches.putIfAbsent(uuid, match);
+    public UUID save(Match match) {
+        UUID uuid = UUID.randomUUID();
+        ongoingMatches.put(uuid, match);
+        return uuid;
     }
 
     @Override

@@ -3,15 +3,16 @@ package ru.prplhd.tennisscoreboard.repository;
 import ru.prplhd.tennisscoreboard.domain.Match;
 import ru.prplhd.tennisscoreboard.domain.Player;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface OngoingMatchRepository {
 
-    Match findById(UUID id);
+    Optional<Match> findById(UUID uuid);
 
-    Match save(UUID id, Match match);
+    UUID save(Match match);
 
-    Match delete(UUID id);
+    Match delete(UUID uuid);
 
-    Match applyPoint(UUID id, Player player);
+    Match applyPoint(UUID uuid, Player player);
 }

@@ -38,17 +38,15 @@ public class OngoingMatchServiceImpl implements OngoingMatchService{
         Player firstPlayer = getOrCreateByName(firstPlayerName);
         Player secondPlayer = getOrCreateByName(secondPlayerName);
 
-        UUID matchUUID = UUID.randomUUID();
         Match match = new Match(firstPlayer, secondPlayer);
 
-        ongoingMatchRepository.save(matchUUID, match);
-
-        return matchUUID;
+        return ongoingMatchRepository.save(match);
     }
 
     @Override
     public MatchSnapshot getMatchScoreboard(UUID matchUUID) {
-        Match match = ongoingMatchRepository.findById(matchUUID);
+        Match match = ongoingMatchRepository.findById(matchUUID)
+                .orElseThrow(() -> new NotFoundException("This match has finished or does not exist"));
 
         return match.getSnapshot();
     }
