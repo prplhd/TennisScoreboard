@@ -1,5 +1,6 @@
 package ru.prplhd.tennisscoreboard.storage.db.hibernate.repository;
 
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import ru.prplhd.tennisscoreboard.repository.PlayerRepository;
@@ -7,23 +8,23 @@ import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.PlayerEntity;
 
 import java.util.Optional;
 
+@RequiredArgsConstructor
 public class PlayerRepositoryImpl implements PlayerRepository {
 
+    private static final String NAME_PARAM = "name";
+
+    private static final String FIND_BY_NAME_HQL = """
+        SELECT p FROM PlayerEntity p
+        WHERE p.name = :""" + NAME_PARAM;
+
     private static final Class<PlayerEntity> clazz = PlayerEntity.class;
+
     private final SessionFactory sessionFactory;
 
-    public PlayerRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
     @Override
-    public Optional<PlayerEntity> findPlayerByName(String name) {
+    public Optional<PlayerEntity> findByName(String name) {
         Session session = sessionFactory.getCurrentSession();
-        String hql = """
-                SELECT p FROM PlayerEntity p
-                WHERE p.name = :name
-                """;
-        return session.createQuery(hql, clazz).setParameter("name", name).uniqueResultOptional();
+        return session.createQuery(FIND_BY_NAME_HQL, clazz).setParameter(NAME_PARAM, name).uniqueResultOptional();
     }
 
     @Override

@@ -68,10 +68,10 @@ public class FinishedMatchesPersistenceServiceImpl implements FinishedMatchesPer
 
     @Override
     public void saveMatch(MatchScoreboardDto matchScoreboardDto) {
-        PlayerEntity firstPlayer = playerRepository.findPlayerByName(matchScoreboardDto.firstPlayer())
+        PlayerEntity firstPlayer = playerRepository.findByName(matchScoreboardDto.firstPlayer())
                 .orElseThrow(RuntimeException::new);
 
-        PlayerEntity secondPlayer = playerRepository.findPlayerByName(matchScoreboardDto.secondPlayer())
+        PlayerEntity secondPlayer = playerRepository.findByName(matchScoreboardDto.secondPlayer())
                 .orElseThrow(RuntimeException::new);
 
         String winnerName = matchScoreboardDto.winner();

@@ -71,18 +71,18 @@ public class OngoingMatchServiceImpl implements OngoingMatchService{
     @Override
     public MatchPlayerIdsDto getPlayerIds(MatchScoreboardDto matchScoreboardDto) {
         String firstPlayerName = matchScoreboardDto.firstPlayer();
-        int firstPlayerId = playerRepository.findPlayerByName(matchScoreboardDto.firstPlayer())
+        int firstPlayerId = playerRepository.findByName(matchScoreboardDto.firstPlayer())
                 .orElseThrow(() -> new NotFoundException("Player with name '" + firstPlayerName + "' not found")).getId();
 
         String secondPlayerName = matchScoreboardDto.secondPlayer();
-        int secondPlayerId = playerRepository.findPlayerByName(matchScoreboardDto.secondPlayer())
+        int secondPlayerId = playerRepository.findByName(matchScoreboardDto.secondPlayer())
                 .orElseThrow(() -> new NotFoundException("Player with name '" + secondPlayerName + "' not found")).getId();
 
         return new MatchPlayerIdsDto(firstPlayerId, secondPlayerId);
     }
 
     private Player getOrCreateByName(String name) {
-        PlayerEntity playerEntity = playerRepository.findPlayerByName(name)
+        PlayerEntity playerEntity = playerRepository.findByName(name)
                 .orElseGet(() -> playerRepository.save(new PlayerEntity(name)));
 
         return new Player(playerEntity.getName());

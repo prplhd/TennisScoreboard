@@ -5,7 +5,7 @@ import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.PlayerEntity;
 import java.util.Optional;
 
 public interface PlayerRepository {
-    Optional<PlayerEntity> findPlayerByName(String name);
+    Optional<PlayerEntity> findByName(String name);
 
     Optional<PlayerEntity> findById(Integer id);
 
