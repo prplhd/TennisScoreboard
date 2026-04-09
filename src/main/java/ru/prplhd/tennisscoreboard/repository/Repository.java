@@ -9,7 +9,4 @@ public interface Repository<ID extends Serializable, E> {
 
     E save(E entity);
 
-    void delete(E entity);
-
-    void update(E entity);
 }
