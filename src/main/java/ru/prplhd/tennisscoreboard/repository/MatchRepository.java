@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface MatchRepository {
 
-    List<MatchEntity> findMatches(int offset, int limit);
+    List<MatchEntity> findAll(int offset, int limit);
 
-    List<MatchEntity> findMatchesByName(int offset, int limit, String name);
+    List<MatchEntity> findAllByName(int offset, int limit, String name);
 
-    MatchEntity save(MatchEntity entity);
+    void save(MatchEntity entity);
 
     long countAll();
 

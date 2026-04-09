@@ -29,7 +29,7 @@ public class FinishedMatchesPersistenceServiceImpl implements FinishedMatchesPer
 
         int offset = PaginationHelper.getOffset(page);
 
-        List<MatchEntity> matches = matchRepository.findMatches(offset, PaginationHelper.DEFAULT_PAGE_LIMIT_SIZE);
+        List<MatchEntity> matches = matchRepository.findAll(offset, PaginationHelper.DEFAULT_PAGE_LIMIT_SIZE);
         List<FinishedMatchDto> matchesDtos = toDtos(matches);
 
         Map<String, Integer> pagesWindow = PaginationHelper.getPagesWindow(page, totalPages);
@@ -52,7 +52,7 @@ public class FinishedMatchesPersistenceServiceImpl implements FinishedMatchesPer
 
         int offset = PaginationHelper.getOffset(page);
 
-        List<MatchEntity> matches = matchRepository.findMatchesByName(offset, PaginationHelper.DEFAULT_PAGE_LIMIT_SIZE, name);
+        List<MatchEntity> matches = matchRepository.findAllByName(offset, PaginationHelper.DEFAULT_PAGE_LIMIT_SIZE, name);
         List<FinishedMatchDto> matchesDtos = toDtos(matches);
 
         Map<String, Integer> pagesWindow = PaginationHelper.getPagesWindow(page, totalPages);

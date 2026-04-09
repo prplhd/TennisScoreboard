@@ -1,25 +1,23 @@
 package ru.prplhd.tennisscoreboard.storage.db.hibernate.repository;
 
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import ru.prplhd.tennisscoreboard.repository.MatchRepository;
 import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.MatchEntity;
 
 import java.util.List;
+import java.util.Locale;
 
+@RequiredArgsConstructor
 public class MatchRepositoryImpl implements MatchRepository {
 
-    private static final Class<MatchEntity> clazz = MatchEntity.class;
-    private final SessionFactory sessionFactory;
+    private static final String NAME_PARAM = "name";
 
-    public MatchRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    private static final String FIND_ALL_MATCHES = """
+    private static final String FIND_ALL_MATCHES_HQL = """
             SELECT m FROM MatchEntity m
-            JOIN FETCH m.firstPlayer
-            JOIN FETCH m.secondPlayer
+            LEFT JOIN FETCH m.firstPlayer
+            LEFT JOIN FETCH m.secondPlayer
             """;
 
     private static final String COUNT_ALL_MATCHES_HQL = """
@@ -27,35 +25,40 @@ public class MatchRepositoryImpl implements MatchRepository {
             """;
 
     private static final String FILTER_BY_NAME_HQL = """
-            WHERE (lower(m.firstPlayer.name) = :name OR lower(m.secondPlayer.name) = :name)
-            """;
+            WHERE (lower(m.firstPlayer.name) = :%s
+            OR lower(m.secondPlayer.name) = :%s)
+            """.formatted(NAME_PARAM, NAME_PARAM);
 
     private static final String DESC_ORDER_BY_ID = """
             ORDER BY m.id DESC
             """;
 
+    private static final Class<MatchEntity> clazz = MatchEntity.class;
+
+    private final SessionFactory sessionFactory;
+
+
     @Override
-    public List<MatchEntity> findMatches(int offset, int limit) {
+    public List<MatchEntity> findAll(int offset, int limit) {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery(FIND_ALL_MATCHES + DESC_ORDER_BY_ID, clazz)
+        return session.createQuery(FIND_ALL_MATCHES_HQL + DESC_ORDER_BY_ID, clazz)
                 .setMaxResults(limit)
                 .setFirstResult(offset)
                 .getResultList();
     }
 
     @Override
-    public List<MatchEntity> findMatchesByName(int offset, int limit, String name) {
+    public List<MatchEntity> findAllByName(int offset, int limit, String name) {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery(FIND_ALL_MATCHES + FILTER_BY_NAME_HQL + DESC_ORDER_BY_ID, clazz)
-                .setParameter("name", name)
+        return session.createQuery(FIND_ALL_MATCHES_HQL + FILTER_BY_NAME_HQL + DESC_ORDER_BY_ID, clazz)
+                .setParameter("name", name.toLowerCase(Locale.ROOT))
                 .setMaxResults(limit)
                 .setFirstResult(offset)
                 .getResultList();
     }
 
     @Override
-    public MatchEntity save(MatchEntity entity) {
-        return null;
+    public void save(MatchEntity entity) {
     }
 
     @Override
