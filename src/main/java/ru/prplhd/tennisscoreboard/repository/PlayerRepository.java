@@ -4,6 +4,10 @@ import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.PlayerEntity;
 
 import java.util.Optional;
 
-public interface PlayerRepository extends Repository<Integer, PlayerEntity> {
+public interface PlayerRepository {
     Optional<PlayerEntity> findPlayerByName(String name);
+
+    Optional<PlayerEntity> findById(Integer id);
+
+    PlayerEntity save(PlayerEntity entity);
 }

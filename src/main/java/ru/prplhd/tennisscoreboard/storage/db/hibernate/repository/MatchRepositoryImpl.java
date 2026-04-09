@@ -7,10 +7,13 @@ import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.MatchEntity;
 
 import java.util.List;
 
-public class MatchRepositoryImpl extends BaseRepository<Integer, MatchEntity> implements MatchRepository {
+public class MatchRepositoryImpl implements MatchRepository {
+
+    private static final Class<MatchEntity> clazz = MatchEntity.class;
+    private final SessionFactory sessionFactory;
 
     public MatchRepositoryImpl(SessionFactory sessionFactory) {
-        super(MatchEntity.class, sessionFactory);
+        this.sessionFactory = sessionFactory;
     }
 
     private static final String FIND_ALL_MATCHES = """
@@ -48,6 +51,11 @@ public class MatchRepositoryImpl extends BaseRepository<Integer, MatchEntity> im
                 .setMaxResults(limit)
                 .setFirstResult(offset)
                 .getResultList();
+    }
+
+    @Override
+    public MatchEntity save(MatchEntity entity) {
+        return null;
     }
 
     @Override
