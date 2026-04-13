@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface OngoingMatchService {
     UUID createNewMatch(NewMatchRequestDto newMatchRequestDto);
 
-    MatchSnapshot getMatchScoreboard(UUID matchUUID);
+    MatchSnapshot getMatchSnapshot(UUID matchUUID);
 
     MatchSnapshot applyPoint(UUID matchUUID, Integer scorerId);
 

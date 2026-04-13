@@ -9,5 +9,5 @@ public interface PlayerRepository {
 
     Optional<PlayerEntity> findById(Integer id);
 
-    PlayerEntity save(PlayerEntity entity);
+    void saveIfAbsent(PlayerEntity entity);
 }

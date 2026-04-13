@@ -35,7 +35,7 @@ public class MatchScoreServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             UUID matchUUID = UUID.fromString(req.getParameter("uuid"));
-            MatchSnapshot matchSnapshot = ongoingMatchService.getMatchScoreboard(matchUUID);
+            MatchSnapshot matchSnapshot = ongoingMatchService.getMatchSnapshot(matchUUID);
             MatchScoreboardDto matchScoreboardDto = MatchScoreboardMapper.toDto(matchSnapshot);
 
             MatchPlayerIdsDto matchPlayerIdsDto = ongoingMatchService.getPlayerIds(matchScoreboardDto);

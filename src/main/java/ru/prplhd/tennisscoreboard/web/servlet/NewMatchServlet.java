@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import ru.prplhd.tennisscoreboard.dto.NewMatchRequestDto;
 import ru.prplhd.tennisscoreboard.exception.ValidationException;
 import ru.prplhd.tennisscoreboard.service.OngoingMatchService;
+import ru.prplhd.tennisscoreboard.util.Validator;
 import ru.prplhd.tennisscoreboard.web.ServletContextKeys;
 
 import java.io.IOException;
@@ -43,7 +44,10 @@ public class NewMatchServlet extends HttpServlet {
         }
 
         firstPlayerName = firstPlayerName.trim();
+        Validator.validatePlayerName(firstPlayerName);
+
         secondPlayerName = secondPlayerName.trim();
+        Validator.validatePlayerName(secondPlayerName);
 
         NewMatchRequestDto newMatchRequestDto = new NewMatchRequestDto(firstPlayerName, secondPlayerName);
 

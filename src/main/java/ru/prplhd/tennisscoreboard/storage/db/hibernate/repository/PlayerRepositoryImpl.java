@@ -17,6 +17,12 @@ public class PlayerRepositoryImpl implements PlayerRepository {
         SELECT p FROM PlayerEntity p
         WHERE p.name = :""" + NAME_PARAM;
 
+    private static final String INSERT_PLAYER_IF_ABSENT_SQL = """
+        INSERT INTO players(name)
+        VALUES (:%s)
+        ON CONFLICT DO NOTHING""".formatted(NAME_PARAM);
+
+
     private static final Class<PlayerEntity> clazz = PlayerEntity.class;
 
     private final SessionFactory sessionFactory;
@@ -34,9 +40,8 @@ public class PlayerRepositoryImpl implements PlayerRepository {
     }
 
     @Override
-    public PlayerEntity save(PlayerEntity entity) {
+    public void saveIfAbsent(PlayerEntity entity) {
         Session session = sessionFactory.getCurrentSession();
-        session.persist(entity);
-        return entity;
+        session.createNativeMutationQuery(INSERT_PLAYER_IF_ABSENT_SQL).setParameter(NAME_PARAM, entity.getName()).executeUpdate();
     }
 }

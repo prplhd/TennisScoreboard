@@ -12,7 +12,6 @@ import ru.prplhd.tennisscoreboard.exception.ValidationException;
 import ru.prplhd.tennisscoreboard.repository.OngoingMatchRepository;
 import ru.prplhd.tennisscoreboard.repository.PlayerRepository;
 import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.PlayerEntity;
-import ru.prplhd.tennisscoreboard.util.Validator;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -26,17 +25,20 @@ public class OngoingMatchServiceImpl implements OngoingMatchService{
     @Override
     public UUID createNewMatch(NewMatchRequestDto newMatchRequestDto) {
         String firstPlayerName = newMatchRequestDto.firstPlayerName();
-        Validator.validatePlayerName(firstPlayerName);
-
         String secondPlayerName = newMatchRequestDto.secondPlayerName();
-        Validator.validatePlayerName(secondPlayerName);
 
         if (Objects.equals(firstPlayerName, secondPlayerName)) {
             throw new ValidationException("Player names must be different");
         }
 
-        Player firstPlayer = getOrCreateByName(firstPlayerName);
-        Player secondPlayer = getOrCreateByName(secondPlayerName);
+        PlayerEntity firstPlayerEntity = new PlayerEntity(firstPlayerName);
+        PlayerEntity secondPlayerEntity = new PlayerEntity(secondPlayerName);
+
+        playerRepository.saveIfAbsent(firstPlayerEntity);
+        playerRepository.saveIfAbsent(secondPlayerEntity);
+
+        Player firstPlayer = new Player(firstPlayerEntity.getName());
+        Player secondPlayer = new Player(secondPlayerEntity.getName());
 
         Match match = new Match(firstPlayer, secondPlayer);
 
@@ -44,7 +46,7 @@ public class OngoingMatchServiceImpl implements OngoingMatchService{
     }
 
     @Override
-    public MatchSnapshot getMatchScoreboard(UUID matchUUID) {
+    public MatchSnapshot getMatchSnapshot(UUID matchUUID) {
         Match match = ongoingMatchRepository.findById(matchUUID)
                 .orElseThrow(() -> new NotFoundException("This match has finished or does not exist"));
 
@@ -77,12 +79,5 @@ public class OngoingMatchServiceImpl implements OngoingMatchService{
                 .orElseThrow(() -> new NotFoundException("Player with name '" + secondPlayerName + "' not found")).getId();
 
         return new MatchPlayerIdsDto(firstPlayerId, secondPlayerId);
-    }
-
-    private Player getOrCreateByName(String name) {
-        PlayerEntity playerEntity = playerRepository.findByName(name)
-                .orElseGet(() -> playerRepository.save(new PlayerEntity(name)));
-
-        return new Player(playerEntity.getName());
     }
 }

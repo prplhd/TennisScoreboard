@@ -59,6 +59,8 @@ public class MatchRepositoryImpl implements MatchRepository {
 
     @Override
     public void save(MatchEntity entity) {
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(entity);
     }
 
     @Override
