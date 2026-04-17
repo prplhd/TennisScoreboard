@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ru.prplhd.tennisscoreboard.dto.FinishedMatchesPageDto;
+import ru.prplhd.tennisscoreboard.web.dto.FinishedMatchesPageDto;
 import ru.prplhd.tennisscoreboard.service.FinishedMatchesPersistenceService;
 import ru.prplhd.tennisscoreboard.web.ServletContextKeys;
 

@@ -1,4 +1,4 @@
-package ru.prplhd.tennisscoreboard.storage.db.hibernate.entity;
+package ru.prplhd.tennisscoreboard.data.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

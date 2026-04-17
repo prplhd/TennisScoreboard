@@ -1,4 +1,4 @@
-package ru.prplhd.tennisscoreboard.dto.match;
+package ru.prplhd.tennisscoreboard.web.dto.match;
 
 public record MatchScoreboardDto(
         String firstPlayer,

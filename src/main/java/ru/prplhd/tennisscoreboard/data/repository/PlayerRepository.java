@@ -1,6 +1,6 @@
-package ru.prplhd.tennisscoreboard.repository;
+package ru.prplhd.tennisscoreboard.data.repository;
 
-import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.PlayerEntity;
+import ru.prplhd.tennisscoreboard.data.entity.PlayerEntity;
 
 import java.util.Optional;
 

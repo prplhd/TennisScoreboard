@@ -1,9 +1,9 @@
 package ru.prplhd.tennisscoreboard.service;
 
 import ru.prplhd.tennisscoreboard.domain.snapshot.MatchSnapshot;
-import ru.prplhd.tennisscoreboard.dto.NewMatchRequestDto;
-import ru.prplhd.tennisscoreboard.dto.match.MatchPlayerIdsDto;
-import ru.prplhd.tennisscoreboard.dto.match.MatchScoreboardDto;
+import ru.prplhd.tennisscoreboard.web.dto.NewMatchRequestDto;
+import ru.prplhd.tennisscoreboard.web.dto.match.MatchPlayerIdsDto;
+import ru.prplhd.tennisscoreboard.web.dto.match.MatchScoreboardDto;
 
 import java.util.UUID;
 

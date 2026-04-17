@@ -1,4 +1,4 @@
-package ru.prplhd.tennisscoreboard.storage.db.migrator;
+package ru.prplhd.tennisscoreboard.config;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

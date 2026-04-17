@@ -1,4 +1,4 @@
-package ru.prplhd.tennisscoreboard.web.bootstrap;
+package ru.prplhd.tennisscoreboard.config;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
@@ -9,20 +9,18 @@ import org.flywaydb.core.api.FlywayException;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import ru.prplhd.tennisscoreboard.repository.MatchRepository;
-import ru.prplhd.tennisscoreboard.repository.OngoingMatchRepository;
-import ru.prplhd.tennisscoreboard.repository.PlayerRepository;
+import ru.prplhd.tennisscoreboard.data.repository.MatchRepository;
+import ru.prplhd.tennisscoreboard.data.repository.OngoingMatchRepository;
+import ru.prplhd.tennisscoreboard.data.repository.PlayerRepository;
 import ru.prplhd.tennisscoreboard.service.FinishedMatchesPersistenceService;
 import ru.prplhd.tennisscoreboard.service.FinishedMatchesPersistenceServiceImpl;
 import ru.prplhd.tennisscoreboard.service.OngoingMatchService;
 import ru.prplhd.tennisscoreboard.service.OngoingMatchServiceImpl;
-import ru.prplhd.tennisscoreboard.storage.db.hibernate.HibernateSessionFactoryProvider;
-import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.MatchEntity;
-import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.PlayerEntity;
-import ru.prplhd.tennisscoreboard.storage.db.hibernate.repository.MatchRepositoryImpl;
-import ru.prplhd.tennisscoreboard.storage.db.hibernate.repository.PlayerRepositoryImpl;
-import ru.prplhd.tennisscoreboard.storage.db.migrator.DatabaseMigrator;
-import ru.prplhd.tennisscoreboard.storage.inmemory.InMemoryOngoingMatchRepository;
+import ru.prplhd.tennisscoreboard.data.entity.MatchEntity;
+import ru.prplhd.tennisscoreboard.data.entity.PlayerEntity;
+import ru.prplhd.tennisscoreboard.data.repository.impl.MatchRepositoryImpl;
+import ru.prplhd.tennisscoreboard.data.repository.impl.PlayerRepositoryImpl;
+import ru.prplhd.tennisscoreboard.data.repository.impl.InMemoryOngoingMatchRepository;
 import ru.prplhd.tennisscoreboard.web.ServletContextKeys;
 
 @Slf4j

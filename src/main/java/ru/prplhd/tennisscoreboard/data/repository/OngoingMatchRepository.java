@@ -1,4 +1,4 @@
-package ru.prplhd.tennisscoreboard.repository;
+package ru.prplhd.tennisscoreboard.data.repository;
 
 import ru.prplhd.tennisscoreboard.domain.Match;
 import ru.prplhd.tennisscoreboard.domain.Player;

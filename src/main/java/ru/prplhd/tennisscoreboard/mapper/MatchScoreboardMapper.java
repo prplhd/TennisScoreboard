@@ -1,7 +1,7 @@
 package ru.prplhd.tennisscoreboard.mapper;
 
 import ru.prplhd.tennisscoreboard.domain.snapshot.MatchSnapshot;
-import ru.prplhd.tennisscoreboard.dto.match.MatchScoreboardDto;
+import ru.prplhd.tennisscoreboard.web.dto.match.MatchScoreboardDto;
 
 public final class MatchScoreboardMapper {
 

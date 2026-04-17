@@ -1,6 +1,6 @@
-package ru.prplhd.tennisscoreboard.dto;
+package ru.prplhd.tennisscoreboard.web.dto;
 
-import ru.prplhd.tennisscoreboard.dto.match.FinishedMatchDto;
+import ru.prplhd.tennisscoreboard.web.dto.match.FinishedMatchDto;
 
 import java.util.List;
 

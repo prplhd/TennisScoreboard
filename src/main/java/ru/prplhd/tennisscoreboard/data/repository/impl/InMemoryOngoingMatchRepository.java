@@ -1,9 +1,9 @@
-package ru.prplhd.tennisscoreboard.storage.inmemory;
+package ru.prplhd.tennisscoreboard.data.repository.impl;
 
 import ru.prplhd.tennisscoreboard.domain.Match;
 import ru.prplhd.tennisscoreboard.domain.Player;
 import ru.prplhd.tennisscoreboard.exception.NotFoundException;
-import ru.prplhd.tennisscoreboard.repository.OngoingMatchRepository;
+import ru.prplhd.tennisscoreboard.data.repository.OngoingMatchRepository;
 
 import java.util.Map;
 import java.util.Optional;

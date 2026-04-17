@@ -1,4 +1,4 @@
-package ru.prplhd.tennisscoreboard.storage.db.hibernate;
+package ru.prplhd.tennisscoreboard.config;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

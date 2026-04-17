@@ -1,7 +1,7 @@
 package ru.prplhd.tennisscoreboard.service;
 
-import ru.prplhd.tennisscoreboard.dto.FinishedMatchesPageDto;
-import ru.prplhd.tennisscoreboard.dto.match.MatchScoreboardDto;
+import ru.prplhd.tennisscoreboard.web.dto.FinishedMatchesPageDto;
+import ru.prplhd.tennisscoreboard.web.dto.match.MatchScoreboardDto;
 
 public interface FinishedMatchesPersistenceService {
 

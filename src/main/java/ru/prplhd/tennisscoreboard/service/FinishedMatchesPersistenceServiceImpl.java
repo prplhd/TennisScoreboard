@@ -1,13 +1,13 @@
 package ru.prplhd.tennisscoreboard.service;
 
 import lombok.RequiredArgsConstructor;
-import ru.prplhd.tennisscoreboard.dto.match.FinishedMatchDto;
-import ru.prplhd.tennisscoreboard.dto.FinishedMatchesPageDto;
-import ru.prplhd.tennisscoreboard.dto.match.MatchScoreboardDto;
-import ru.prplhd.tennisscoreboard.repository.MatchRepository;
-import ru.prplhd.tennisscoreboard.repository.PlayerRepository;
-import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.MatchEntity;
-import ru.prplhd.tennisscoreboard.storage.db.hibernate.entity.PlayerEntity;
+import ru.prplhd.tennisscoreboard.web.dto.match.FinishedMatchDto;
+import ru.prplhd.tennisscoreboard.web.dto.FinishedMatchesPageDto;
+import ru.prplhd.tennisscoreboard.web.dto.match.MatchScoreboardDto;
+import ru.prplhd.tennisscoreboard.data.repository.MatchRepository;
+import ru.prplhd.tennisscoreboard.data.repository.PlayerRepository;
+import ru.prplhd.tennisscoreboard.data.entity.MatchEntity;
+import ru.prplhd.tennisscoreboard.data.entity.PlayerEntity;
 import ru.prplhd.tennisscoreboard.util.PaginationHelper;
 
 import java.util.ArrayList;
